@@ -1,6 +1,6 @@
 ---
 name: miuix
-description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multiplatform UI。用于明确采用 Miuix 的页面、组件、主题、导航、弹窗、安全区与滚动动画性能任务，或询问 MiuixTheme、miuix-nav 等 Miuix API。通用 Compose 控件问题或明确指定 Material 3 等其他设计系统时不触发。"
+description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multiplatform UI。用于明确采用 Miuix 的页面、组件、主题、导航、弹窗、安全区、布局密度与滚动动画性能任务，或询问 MiuixTheme、miuix-nav 等 Miuix API。通用 Compose 控件问题或明确指定 Material 3 等其他设计系统时不触发。"
 ---
 
 # Miuix
@@ -26,7 +26,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 
 | 任务 | 读取 |
 |---|---|
-| 依赖、主题、完整 App、Preview | [setup-and-theme](references/setup-and-theme.md) |
+| 依赖、主题、完整 App、Preview、跨页面 DPI/布局密度 | [setup-and-theme](references/setup-and-theme.md) |
 | 页面创建、设置分组、组合方式 | [usage-patterns](references/usage-patterns.md) + [design-language](references/design-language.md) |
 | 已有 UI 改造、截图审查、无障碍 | [ui-review-workflow](references/ui-review-workflow.md) |
 | Scaffold、滚动、搜索、宽屏、刘海、键盘、安全区 | [page-layout-and-insets](references/page-layout-and-insets.md) |
@@ -50,6 +50,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 ## 关键约束
 
 - **状态与宿主**：业务状态上提；Overlay 使用页面 `Scaffold` popup host，Window 独立于该 host。调用方落实选中、启用、提交、取消、返回与关闭回调，不把 `onDismissFinished` 当作关闭请求。
+- **密度一致性**：首页、二级页面和整个 `NavDisplay` 共享应用缩放入口；无自定义缩放时沿用平台 density。页面继承一次计算的结果，不局部重乘或重置。整体偏大先查 density/fontScale 与样式来源，按 [密度排查](references/setup-and-theme.md#density-ownership-across-navigation) 取得证据后再改尺寸。
 - **安全区**：记录 top/bottom/start/end/IME 各由谁处理，一次消费。不要把 Mishka 的“只取 top + 尾部 Spacer”套到有 bottomBar 的页面。`PullToRefresh.contentPadding` 不会替列表加 padding。
 - **层级与颜色**：小设置组可用 `SmallTitle + Card`；大动态分组按行 lazy 化。默认样式优先；应用状态色集中定义，不杜撰 `MiuixTheme.colorScheme.warning/success`。
 - **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 包住涟漪。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。

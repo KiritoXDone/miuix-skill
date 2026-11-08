@@ -59,6 +59,8 @@ fun App() {
 
 For direct list operations use `add`, `removeLastOrNull`, `removeAt`, or replace the top entry. `NavController` is an optional thin wrapper with `push`, `pop`, `replace`, and `popUntil`; `pop()` keeps the root entry. `rememberNavController<Route>(Route.Home)` combines it with the remembered serializable stack.
 
+应用有自定义 UI 缩放时，其 `LocalDensity` provider 必须覆盖整个 `NavDisplay` 与所有 route entry，不能仅包首页。entry 内继承同一有效密度；嵌套 NavDisplay 也不再次应用倍率。独立窗口按自身宿主接入同一策略，详见 [密度与导航作用域](setup-and-theme.md#density-ownership-across-navigation)。
+
 ## Saveable identity and lifecycle
 
 - `@Serializable` is a hard requirement for every key in `rememberNavBackStack`. If keys cannot be serialized, use the in-memory `navBackStackOf(...)` factory and do not claim process-death restoration.

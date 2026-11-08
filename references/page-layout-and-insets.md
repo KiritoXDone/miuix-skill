@@ -29,7 +29,7 @@ Mishka 详情页采用 top padding + `24.dp` 尾部 Spacer + navigation inset；
 ## One adaptive decision, two independent dimensions
 
 - 将 shell 的宽窄判断集中到一个函数/状态；`NavigationBar` 与 `NavigationRail`、顶栏模式、搜索顶距共享它。
-- 应用若允许改变 `LocalDensity` 实现 UI 缩放，决定 shell 的窗口宽度可使用缩放前平台密度；内容尺寸仍按实际布局密度计算。`LocalPlatformDensity` 是 Mishka 自定义 CompositionLocal，不能从 Miuix 导入。
+- 先按 [密度作用域](setup-and-theme.md#density-ownership-across-navigation) 统一首页与二级页面的缩放入口。应用若允许改变 `LocalDensity` 实现 UI 缩放，决定 shell 的窗口宽度可使用缩放前平台密度；内容尺寸仍按实际布局密度计算。`LocalPlatformDensity` 是 Mishka 自定义 CompositionLocal，不能从 Miuix 导入。
 - shell 切换断点与内容最大宽度是两个参数。Mishka 用 600 dp / 800 dp；官方 Example 有另一套断点。遵循目标产品，不把其中任一套称为库标准。
 - 需要侧边留白也能拖动列表时，让 `LazyColumn` 保持可用区域全宽，将居中留白加到 `contentPadding`。只缩小列表节点会缩小可滚动命中区域。
 - 内容可用宽度应已扣除 rail 与安全区，侧边留白不小于零。宽窄切换保留 destination、back stack、列表和输入状态。

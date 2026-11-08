@@ -28,7 +28,7 @@ Ask a question only when a missing choice would materially change the visual dir
 
 Trace the page from the outside in:
 
-1. Application theme and `ThemeController` inputs.
+1. Application theme and `ThemeController` inputs; effective `LocalDensity`, font scale and app-scale provider scope across home/detail routes.
 2. Page host: `Scaffold`, bars, popup host, and supplied content padding.
 3. Scroll container, adaptive-width logic, system/IME insets, and navigation layout.
 4. Section and surface hierarchy: page → section → Card/container → row/component.
@@ -48,6 +48,7 @@ Assign each observed problem to one or more categories before editing:
 | Spacing and shape | Uneven rhythm, clipping, arbitrary radii | Component Defaults, existing project spacing, Example composition |
 | Color and typography | Poor contrast, literal colors, inconsistent scale | [Design language and Defaults](design-language.md), theme source, component defaults |
 | State and interaction | Wrong state owner, disabled row still clickable, broken dismissal | Demo, integrated Example, and source contract |
+| Cross-page scale | Home looks correct but detail screens are enlarged | [Density ownership](setup-and-theme.md#density-ownership-across-navigation); compare runtime density/fontScale, providers and matching component defaults |
 | Insets and adaptation | Content under bars, IME overlap, broken wide layout | Scaffold contract, page shell, target platform behavior |
 | Accessibility | Missing descriptions, tiny targets, unreadable scaled text | Component semantics, target accessibility requirements, rendered checks |
 | Performance | Whole-group composition, animation/recomposition churn, invisible work | [Lists and animation](performance-and-animation.md), representative data and traces |
@@ -110,6 +111,7 @@ Check the rows that apply to the target instead of treating one device screensho
 | Condition | Check |
 |---|---|
 | Compact/wide or resized window | Navigation state remains hoisted and singular; content reflows without duplicating bars or route stacks |
+| Home/detail/deeper route, back, direct entry and popup | Same app-scale policy reaches every host exactly once; system font scale and host density changes remain supported |
 | System bars and Scaffold padding | Content, app bars, floating controls, and scroll indicators consume the owning insets exactly once |
 | IME and focused field | The focused field and error/supporting text remain visible; dismissal and back behavior do not lose the draft |
 | Orientation, fold, or pane change | Width constraints, popup anchoring, and dialog/window choice remain valid after the host changes size |

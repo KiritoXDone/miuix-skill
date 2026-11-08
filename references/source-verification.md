@@ -9,7 +9,7 @@ Contents: [evidence workflow](#evidence-resolution-workflow) · [snapshot scope]
 1. Start from the component catalog, [usage-pattern evidence levels](usage-patterns.md#evidence-levels), or the exact file named by another reference.
 2. Expand abbreviated paths with the table below.
 3. Read the relevant `docs/**/*.md` file from the pinned snapshot for intent, the matching `docs/demo/` file for an isolated call, the closest `example/shared/` section for integration, and source for the API/behavior contract. Do not read every document or source file unless the task is a release audit.
-4. For current catalog work, keep all evidence on commit `39c40f99` / tag `v0.9.4`. The stable tag was verified on 2026-11-08; see [v0.9.4 release notes](release-v0.9.4.md) for changes from rc01. Do not use the rolling rendered documentation site or generated Dokka pages for version-sensitive parameters. If the target project uses another version, state that mismatch and verify that version separately.
+4. For current catalog work, keep all evidence on commit `39c40f99` / tag `v0.9.4`. The stable tag was verified on 2026-11-08. Do not use the rolling rendered documentation site or generated Dokka pages for version-sensitive parameters. If the target project uses another version, state that mismatch and verify that version separately.
 5. Return to the [Code Delivery Contract](../SKILL.md#code-delivery-contract) before presenting implementation or validation claims.
 
 The [official documentation site](https://compose-miuix-ui.github.io/miuix/) is useful for concepts and discovery; verify version-sensitive claims in tagged Markdown/source. A local checkout or cache of the same tag/commit is equally valid evidence. If no matching evidence is available, mark the specific claim unverified and continue independent work; do not invent APIs or block the whole task unnecessarily.
@@ -19,11 +19,9 @@ The [official documentation site](https://compose-miuix-ui.github.io/miuix/) is 
 | Evidence role | Pinned snapshot |
 |---|---|
 | Maintained stable catalog | `v0.9.4` at commit `39c40f99844227b853f0049a0933b1f3ae6c00ba` |
-| Previous catalog | `v0.9.4-rc01` at `4a6b750b578880146876e4ab77097d9b01702413`, historical only |
-| Historical comparison | `v0.9.3` tag, only for tasks that target or compare that release |
 | Other versions | Resolve the target project's exact tag or commit before making version-sensitive claims |
 
-This table describes the Skill's maintained evidence scope. It is not a substitute for checking a target project's actual dependency version.
+Maintain one baseline in this guide; keep component behavior in its topic reference rather than separate release-history files. For a project on another version, inspect that version on demand. This table does not replace checking the project's actual dependency.
 
 ## Path Convention
 
@@ -34,7 +32,7 @@ All file paths in the tables below are relative to the Miuix repository root. Re
 | Read a version-pinned Markdown doc, demo, or source file | `https://raw.githubusercontent.com/compose-miuix-ui/miuix/39c40f99844227b853f0049a0933b1f3ae6c00ba/<file-path>` |
 | Browse a **directory** | `https://github.com/compose-miuix-ui/miuix/tree/39c40f99844227b853f0049a0933b1f3ae6c00ba/<dir-path>` |
 
-The repository Markdown file is the documentation evidence. The rendered site may represent a later commit and must not replace the pinned `docs/**/*.md` file during a version-pinned task. For historical `v0.9.3` work, substitute the `v0.9.3` tag explicitly.
+The repository Markdown file is the documentation evidence. The rendered site may represent a later commit and must not replace the pinned `docs/**/*.md` file during a version-pinned task. For another target version, substitute its verified tag or commit explicitly.
 
 | Abbreviation | Relative path |
 |---|---|

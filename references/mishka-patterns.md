@@ -9,7 +9,7 @@
 | 来源 | 固定证据 | 用途 |
 |---|---|---|
 | 用户指定指南 | [Mishka UI 规范](https://github.com/YuKongA/Mishka/blob/91e17c02d6eadbca6752ed30014660e378dc9c33/docs/ui-guidelines.md) | 布局、安全区、列表、动画与项目例外 |
-| Mishka 依赖 | [libs.versions.toml](https://github.com/YuKongA/Mishka/blob/91e17c02d6eadbca6752ed30014660e378dc9c33/gradle/libs.versions.toml) | 此指南对应 Miuix 0.9.4，不是 rc01 |
+| Mishka 依赖 | [libs.versions.toml](https://github.com/YuKongA/Mishka/blob/91e17c02d6eadbca6752ed30014660e378dc9c33/gradle/libs.versions.toml) | 此指南对应 Miuix 0.9.4 |
 | 官方入口 | [Miuix 文档](https://compose-miuix-ui.github.io/miuix/) / [中文](https://compose-miuix-ui.github.io/miuix/zh_CN/) | 概念、组件发现；滚动网站不作为旧版本签名证明 |
 | 库契约 | [Miuix v0.9.4 源码](https://github.com/compose-miuix-ui/miuix/tree/39c40f99844227b853f0049a0933b1f3ae6c00ba) | 以确切源码解释 Scaffold、弹窗、squircle、Dropdown 等行为 |
 

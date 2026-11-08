@@ -20,7 +20,7 @@ Mishka 详情页采用 top padding + `24.dp` 尾部 Spacer + navigation inset；
 ## Scroll and spacing
 
 - 有折叠顶栏时，列表的 `nestedScroll` 接同一 `scrollBehavior.nestedScrollConnection`，不要重新创建另一份行为状态。固定顶栏无需为了模板而加折叠逻辑。
-- `overScrollVertical` 与滚动触觉按项目交互和平台使用；确认 theme 已有的 overscroll 配置，避免重复效果。`scrollEndHaptic` 在 Mishka 是项目 helper，不是通用可导入 API。
+- `overScrollVertical` 与滚动触觉按项目交互和平台使用；确认 theme 已有的 overscroll 配置，避免重复效果。`scrollEndHaptic` 在 Mishka 是项目 helper，不是通用可导入 API。v0.9.4 支持自定义鼠标拖动参与 overscroll；不要把滚轮与拖动视为同一种输入，核对目标版本的 `Overscroll.kt` / `OverscrollFactory.kt`。
 - 第一项是 Card/裸表单时，可用项目节奏补顶部间隔；第一项是自带上下内边距的 `SmallTitle` 时不要再无条件加同一间隔。
 - Mishka 以 12 dp 作为横向/组间间距，并选择逐 item bottom padding。目标项目可采用自己的 spacing 或 `Arrangement.spacedBy`；分段卡片内部需要无缝衔接，不能对所有段统一加间距。
 - `TextField` 已有自己的背景和交互样式，只有分组语义需要时才包 Card。
@@ -49,6 +49,7 @@ Mishka 的 `rememberSearchScreenStatus`、`SearchResultStatusEffect`、`remember
 - `CrossAxisInterceptor` 模式配套 `userScrollEnabled = false` **及** `pageNestedScrollConnection = PagerGestureNestedScrollConnection`，缺一不可。
 - 改回 `Native` 或 `TapToHalt` 时同时恢复原生 pager 的两项配置。
 - 禁用滑动切页时，同时禁用 modifier 与 pager 的用户滚动。
+- 点击 tab 或导航项可按官方调用使用 `pagerState.springAnimateToPage(targetPage)`；同样由单一 pager state 管理选中页。
 - TabRow 的选择值直接来自 `pagerState.currentPage`；点击触发滚动，不用两个互相同步的 `LaunchedEffect` 维持重复 selected state。
 
 精确 imports 和调用形状查 `miuix-ui/.../utils/PagerGestureUtils.kt` 与 `docs/guide/utils.md`，通过 [source-verification](source-verification.md) 定位。

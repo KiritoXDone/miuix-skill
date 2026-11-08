@@ -37,8 +37,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 | 自然语言配色、主题语义色、状态色 | [color-lookup](references/color-lookup.md) + [design-language](references/design-language.md) |
 | 图标、squircle、blur、自定义绘制 | [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 路由、返回栈、转场、预测返回 | [miuix-nav](references/miuix-nav.md) |
-| v0.9.4 更新与兼容性 | [release-v0.9.4](references/release-v0.9.4.md) |
-| 旧版本迁移 | [v0.9.3 → rc01](references/release-v0.9.4-rc01.md)、[历史 v0.9.3](references/release-v0.9.3.md)，仅按需读取 |
+| 版本基线与源码核验 | [source-verification](references/source-verification.md) |
 
 ## 从证据到实现
 

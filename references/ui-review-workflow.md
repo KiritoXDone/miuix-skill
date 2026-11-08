@@ -19,7 +19,7 @@ Use this workflow when the user asks to improve, polish, modernize, restructure,
 
 1. Read the user's stated goal and constraints before proposing visual changes.
 2. Inspect the current implementation. If a screenshot, mockup, preview, or device capture is available, inspect it together with the code; neither view alone explains both appearance and behavior.
-3. Identify the Miuix dependency version used by the target project. This Skill's catalog follows the `0.9.4` stable snapshot at `39c40f99`; verify separately when the project targets another version or the stable `v0.9.3` release.
+3. Identify the Miuix dependency version used by the target project. This Skill's catalog follows the `0.9.4` stable snapshot at `39c40f99`; verify separately when the project targets another version.
 4. Preserve intentional project conventions unless they cause the reported problem or the user asks to replace them.
 
 Ask a question only when a missing choice would materially change the visual direction. Continue read-only inspection while that choice is unresolved.

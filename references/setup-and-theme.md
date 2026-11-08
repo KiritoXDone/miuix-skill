@@ -77,7 +77,7 @@ fun App() {
 
 `ColorSchemeMode` options: `System` / `Light` / `Dark` / `MonetSystem` / `MonetLight` / `MonetDark`.
 
-> **Version pinning**: Current file paths and component mappings reflect tag `v0.9.4` at commit `39c40f99`. This is a stable release verified on 2026-11-08. For other versions, resolve the exact dependency tag/commit using [Source verification](source-verification.md); see [stable migration notes](release-v0.9.4.md).
+> **Version pinning**: Current file paths and component mappings reflect tag `v0.9.4` at commit `39c40f99`. This is a stable release verified on 2026-11-08. For other versions, resolve the exact dependency tag/commit using [Source verification](source-verification.md).
 
 ## Android Studio Preview
 

@@ -104,4 +104,4 @@ At the current `0.9.4` stable snapshot there is no public Miuix `SectionHeader`.
 
 - `Scaffold` already hosted `floatingToolbar` and `floatingToolbarPosition` before v0.9.4; use the scaffold slot instead of manually overlaying a toolbar, and rely on v0.9.4's snackbar spacing fix for a bottom toolbar.
 - `InputField` accepts `color`; the `SearchBar` wrapper does not. Pass `Color.Transparent` only when another surface, such as a backdrop blur, intentionally owns the capsule background.
-- `PullToRefresh` supports `rememberPullToRefreshState(refreshThreshold = ...)` and `onPullProgress`; read the migration reference before deriving a second refresh state.
+- `PullToRefresh` supports `rememberPullToRefreshState(refreshThreshold = ...)` and `onPullProgress`; verify the target-version `PullToRefresh.kt` contract before deriving a second refresh state.

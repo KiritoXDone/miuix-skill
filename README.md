@@ -12,7 +12,7 @@
 - 补全长对话框、原生单选弹窗、squircle 渲染选择与 blur 降级。
 - 区分 Miuix 公共 API、官方 Example 模式与 Mishka 专用 helper，不强制复制应用尺寸和业务规则。
 - 修正 strong skipping 与普通集合的关系，避免虚假的 `@Immutable` 承诺。
-- 将维护基线更新到 **v0.9.4 / `39c40f99`**，保留旧版迁移资料。
+- 以 **v0.9.4 / `39c40f99`** 为维护基线，版本证据统一记录在源码核验指南。
 
 ## 安装
 
@@ -55,7 +55,7 @@ Claude Code 可安装到 `~/.claude/skills/miuix`。其他支持该格式的工�
 | 基础组件 / 设置与菜单 | [component-selection](references/component-selection.md) / [preferences-and-menus](references/preferences-and-menus.md) |
 | 弹窗 / 图标与效果 | [overlays-and-windows](references/overlays-and-windows.md) / [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 主题依赖 / 导航 | [setup-and-theme](references/setup-and-theme.md) / [miuix-nav](references/miuix-nav.md) |
-| 证据定位 / 稳定版变化 | [source-verification](references/source-verification.md) / [release-v0.9.4](references/release-v0.9.4.md) |
+| 版本基线与证据定位 | [source-verification](references/source-verification.md) |
 
 ## 来源与维护
 

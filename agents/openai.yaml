@@ -1,0 +1,4 @@
+interface:
+  display_name: "Miuix"
+  short_description: "构建、优化和审查 Miuix 界面，核对组件、安全区、状态与动画性能"
+  default_prompt: "使用 $miuix 优化当前 Compose 界面，按项目版本核对 API、布局安全区与交互性能。"

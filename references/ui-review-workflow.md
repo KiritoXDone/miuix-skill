@@ -48,7 +48,7 @@ Assign each observed problem to one or more categories before editing:
 | Spacing and shape | Uneven rhythm, clipping, arbitrary radii | Component Defaults, existing project spacing, Example composition |
 | Color and typography | Poor contrast, literal colors, inconsistent scale | [Design language and Defaults](design-language.md), theme source, component defaults |
 | Feedback bounds | Rectangular highlight, protruding corners, whole-row flash around a small button | [Clipping and interaction bounds](styling-icons-and-effects.md#feedback-bounds-and-corner-clipping); locate the indication node and its enclosing shape before changing colors |
-| Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and KernelSU examples](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication and nested click ownership |
+| Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and KernelSU examples](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication, Card-owned click/long-press and independent child-surface ownership |
 | State and interaction | Wrong state owner, disabled row still clickable, broken dismissal | Demo, integrated Example, and source contract |
 | Cross-page scale | Home looks correct but detail screens are enlarged | [Density ownership](setup-and-theme.md#density-ownership-across-navigation); compare runtime density/fontScale, providers and matching component defaults |
 | Insets and adaptation | Content under bars, IME overlap, broken wide layout | Scaffold contract, page shell, target platform behavior |

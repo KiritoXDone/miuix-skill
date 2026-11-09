@@ -50,11 +50,11 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 ## 关键约束
 
 - **状态与宿主**：业务状态上提；Overlay 使用页面 `Scaffold` popup host，Window 独立于该 host。调用方落实选中、启用、提交、取消、返回与关闭回调，不把 `onDismissFinished` 当作关闭请求。
-- **交互反馈**：分清瞬时 pressed、业务 selected/checked 与弹窗入口 held；优先组件自带 indication 和 Defaults。同一动作不叠加点击层、按压遮罩或缩放。参考 [KernelSU 交互实践](references/styling-icons-and-effects.md#pressed-selected-and-held-state)，`holdDownState` 不绑定业务选中值。
+- **交互反馈**：分清瞬时 pressed、业务 selected/checked 与弹窗入口 held；以独立交互表面为单位统一管理动作入口、反馈与形状边界，适用于按钮、卡片、列表/菜单项和嵌套区域；优先组件公开交互 API、自带 indication 和 Defaults。同一动作不叠加点击层、按压遮罩或缩放。参考 [KernelSU 交互实践](references/styling-icons-and-effects.md#pressed-selected-and-held-state)，`holdDownState` 不绑定业务选中值。
 - **密度一致性**：首页、二级页面和整个 `NavDisplay` 共享应用缩放入口；无自定义缩放时沿用平台 density。页面继承一次计算的结果，不局部重乘或重置。整体偏大先查 density/fontScale 与样式来源，按 [密度排查](references/setup-and-theme.md#density-ownership-across-navigation) 取得证据后再改尺寸。
 - **安全区**：记录 top/bottom/start/end/IME 各由谁处理，一次消费。不要把 Mishka 的“只取 top + 尾部 Spacer”套到有 bottomBar 的页面。`PullToRefresh.contentPadding` 不会替列表加 padding。
 - **层级与颜色**：小设置组可用 `SmallTitle + Card`；大动态分组按行 lazy 化。默认样式优先；应用状态色集中定义，不杜撰 `MiuixTheme.colorScheme.warning/success`。
-- **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 裁住按压高亮，裁剪须在高亮绘制层外侧；原生 Button/Card 不外加同动作 clickable/indication；Card 用自身 onClick/onLongPress，独立子表面各自裁剪反馈。高亮越界按 [边界排查](references/styling-icons-and-effects.md#feedback-bounds-and-corner-clipping) 检查，触摸目标与视觉范围分别验收。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。
+- **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 裁住按压高亮，裁剪须在高亮绘制层外侧；每个独立子表面遵守自身形状边界，不能仅依赖父级裁剪。高亮越界按 [边界排查](references/styling-icons-and-effects.md#feedback-bounds-and-corner-clipping) 检查，触摸目标与视觉范围分别验收。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。
 - **性能**：布局/绘制所需的帧级状态在相应阶段读取。拆分大 lazy item、缓存真实依赖、保持 key 语义；`@Immutable` 是真实性承诺，普通 `List` 不等于必然不能 skip。按实际编译器和 profiling 判断。
 - **导航**：`NavigationBar/Rail` 是导航外观，`miuix-nav` 管理返回栈。宽窄布局共享选中状态；持久化路线验证 `@Serializable`；不要凭旧模块名推断 Navigation 3 scene/result API。
 

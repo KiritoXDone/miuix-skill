@@ -59,10 +59,12 @@ Do not use the unversioned rendered docs site or generated online Dokka to infer
 
 当按下后出现长方形、四角突出、整行闪烁或反馈比按钮大时，分别检查 **可见表面、绘制裁剪、交互节点与触摸目标**。`MiuixIndication` 会在自身绘制节点的完整矩形 bounds 上 `drawRect`；它不会推断子按钮的 shape、尺寸或位置。此行为已在 [MiuixIndication.kt](https://github.com/compose-miuix-ui/miuix/blob/39c40f99844227b853f0049a0933b1f3ae6c00ba/miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/MiuixIndication.kt) 核对。
 
+**通用责任边界**：按钮、卡片、列表项、设置行、菜单选项、标签及嵌套可点击区域，都以“具有独立动作的视觉表面”为单位组织交互。该表面统一负责背景/形状、点击或长按入口、反馈绘制与所需裁剪；这些节点可以分层实现，但反馈必须处在该表面的视觉边界内。同一动作优先交给组件公开 API，不把手势和反馈挂到超出其边界的外层代理容器。
+
 - **原生 Button/TextButton/IconButton**：使用组件的 `onClick` 与形状参数。原生 [Button.kt](https://github.com/compose-miuix-ui/miuix/blob/39c40f99844227b853f0049a0933b1f3ae6c00ba/miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Button.kt) 把 `squircleSurface` 放在内部 clickable 之前。调用方传入的 `modifier` 位于这条内部链的外侧；若再附加 clickable/indication，额外高亮可能绕过按钮内置裁剪。先移除重复交互，不在外面继续堆 clip 来补救。
-- **原生可交互 Card（如评论卡片）**：由 `Card(onClick = ..., onLongPress = ..., showIndication = true)` 统一管理需要的点击、长按和按压高亮。v0.9.4 的 [Card.kt](https://github.com/compose-miuix-ui/miuix/blob/39c40f99844227b853f0049a0933b1f3ae6c00ba/miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Card.kt) 将 combinedClickable 放在 BasicCard 的 squircleSurface 内部；其公开长按参数是 `onLongPress`。从外层 modifier/Box 移除同动作的 clickable、combinedClickable、pointerInput 手势及额外 indication，不能只把背景移入 Card 却把点击反馈留在外层。需要高亮时显式启用 showIndication（默认 false），不要以关闭反馈作为修复。
-- **独立回复预览、楼中楼等子表面**：有自己圆角和点击/长按行为的子区域，应由自己的 Card 或“squircleSurface → 交互/indication”负责裁剪。父评论 Card 的 clip 只保证父轮廓，不会自动裁出子预览的内侧圆角。父子沿用各自动作和交互源，验证操作子区域不会额外触发父评论动作；纯展示内容继承父级即可，不为它新增交互或重复表面。
-- **自定义圆角交互表面**：按同一视觉边界组织为“外部间距/尺寸 → `squircleSurface`（填色并裁剪）→ 唯一 clickable/selectable/toggleable 及其 indication → 内容内边距”。背景、clip 与高亮使用一致的几何边界，圆角值和分角方向一致；大小/缩放动画时也共同变化。原生组件不要再套这条自定义链。
+- **原生可交互 Card**：由 `Card(onClick = ..., onLongPress = ..., showIndication = true)` 统一管理需要的点击、长按和按压高亮。v0.9.4 的 [Card.kt](https://github.com/compose-miuix-ui/miuix/blob/39c40f99844227b853f0049a0933b1f3ae6c00ba/miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Card.kt) 将 combinedClickable 放在 BasicCard 的 squircleSurface 内部；其公开长按参数是 `onLongPress`。从外层 modifier/Box 移除同动作的 clickable、combinedClickable、pointerInput 手势及额外 indication，不能只把背景移入 Card 却把点击反馈留在外层。需要高亮时显式启用 showIndication（默认 false），不要以关闭反馈作为修复。
+- **嵌套独立交互表面**：任何有自身视觉轮廓和独立动作的子区域，都复用其组件自带的表面/反馈，或由自身形状包住交互与 indication。父级 clip 只保证父轮廓，不会自动形成子区域的内侧圆角。父子沿用各自动作和交互源，验证操作子区域不会额外触发父级动作；纯展示内容继承父级即可，矩形表面也无需强加圆角或额外裁剪。
+- **自定义圆角交互表面**：按同一视觉边界组织为“外部间距/尺寸 → `squircleSurface`（填色并裁剪）→ 唯一交互节点（clickable/selectable/toggleable，或需要长按时的 combinedClickable）及其 indication → 内容内边距”。背景、clip 与高亮使用一致的几何边界，圆角值和分角方向一致；大小/缩放动画时也共同变化。原生组件不要再套这条自定义链。
 - `squircleBackground` 或 `background(color, shape)` 只绘制背景，不裁剪后续高亮；`clickable → squircleSurface` 会把外层 indication 留在内层裁剪之外。`clipToBounds()` 只有矩形裁剪，不能解决圆角四角突出。不要靠减小 alpha 或随意换圆角掩盖边界错误。
 - **大父容器 + 小按钮**：不要让整行 Box/Row 的 clickable 或 sibling pressed 遮罩负责仅属于小按钮的反馈。若产品本来就是整行 option，则行是交互表面，按行/所在分组卡片边界裁剪，不能误缩到文字或尾部图标。
 - **分组行**：原生 Card 已裁剪子项；拆成 lazy 段后，首/末段负责外轮廓圆角，中段可保持矩形。不能让每一行都画一个超出分组轮廓的矩形遮罩，也不需要给所有中段额外圆角。
@@ -72,7 +74,7 @@ modifier 的先后会改变布局、绘制与点击范围，参见 [Compose modi
 
 **触摸范围单独验收**：Compose 可为过小控件把最小触摸目标扩展到视觉 bounds 外；这不要求高亮也扩大，更不是四角漏色的理由。clip 不能作为“触摸严格符合圆角轮廓”的保证。通过合适的组件尺寸、间隔和单一点击所有者避免邻项误触，不全局关闭最小触摸目标或仅为修视觉而缩小可点击区。[Compose 触摸目标说明](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-touch-target-sizes)
 
-复现时分别按中心、四角、边缘与相邻留白，并检查拖动转滚动、松手取消及缩放后的反馈。观察正常/按下/释放帧的高亮轮廓，同时记录实际命中的动作与次数。嵌套卡片还要分别测试父评论、回复预览和楼中楼的点击/长按，确认每个独立表面的反馈边界及取消行为；看到矩形漏角可认定视觉裁剪不符合目标，但缺少运行证据时不能断言是哪层 modifier 导致。
+复现时分别按中心、四角、边缘与相邻留白，并检查拖动转滚动、松手取消及缩放后的反馈。观察正常/按下/释放帧的高亮轮廓，同时记录实际命中的动作与次数。嵌套区域还要分别测试父表面、独立子表面及二者之间的留白，验证各自支持的点击/长按、反馈边界和取消行为；看到矩形漏角可认定视觉裁剪不符合目标，但缺少运行证据时不能断言是哪层 modifier 导致。
 
 ### Hold only the popup trigger
 

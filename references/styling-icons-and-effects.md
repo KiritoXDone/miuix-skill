@@ -52,8 +52,25 @@ Do not use the unversioned rendered docs site or generated online Dokka to infer
 - 原生组件已有点击和反馈时，不再包同一动作的 `clickable` / `toggleable`，不额外画 pressed 遮罩、叠 `pressable` 或通用 `scale` 动画。确需自定义时明确替换哪一层；不要靠全局 `indication = null` 消除所有反馈。
 - 检查最近的 `MiuixTheme` / `LocalIndication` provider，尤其混用 Material 的项目。只放 Miuix 组件而继承另一套 indication，仍可能出现不同风格的反馈。
 - 自定义行确有必要时，只保留一个同动作交互所有者，使用当前 indication 和正确的 selectable/toggleable 语义；独立组件不要共用一个 InteractionSource 造成联动高亮。原生 Preference 内部的行与开关协作由库负责，调用方不再另包一层。
-- 圆角交互区域要包含并裁住完整高亮，使用组件已有表面或 `squircleSurface`；外部 margin 在命中区外，内部 padding 在命中区内。无圆角中段无需额外 clip。
+- 圆角表面必须裁住完整高亮；按 [反馈范围与裁剪](#feedback-bounds-and-corner-clipping) 核查 modifier 顺序、表面大小和触摸目标，不用仅有背景形状代替裁剪。
 - `PressFeedbackType.Tilt` / `.Sink` 是针对合适表面的显式选择。v0.9.4 `Card` 默认 `None` 且 `showIndication = false`；可点击卡片按需求启用。不要给普通 Button 虚构 `pressFeedbackType` 参数，也不把首页展示卡的 Tilt 推广到所有设置选项。
+
+### Feedback bounds and corner clipping
+
+当按下后出现长方形、四角突出、整行闪烁或反馈比按钮大时，分别检查 **可见表面、绘制裁剪、交互节点与触摸目标**。`MiuixIndication` 会在自身绘制节点的完整矩形 bounds 上 `drawRect`；它不会推断子按钮的 shape、尺寸或位置。此行为已在 [MiuixIndication.kt](https://github.com/compose-miuix-ui/miuix/blob/39c40f99844227b853f0049a0933b1f3ae6c00ba/miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/MiuixIndication.kt) 核对。
+
+- **原生 Button/TextButton/IconButton**：使用组件的 `onClick` 与形状参数。原生 [Button.kt](https://github.com/compose-miuix-ui/miuix/blob/39c40f99844227b853f0049a0933b1f3ae6c00ba/miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Button.kt) 把 `squircleSurface` 放在内部 clickable 之前。调用方传入的 `modifier` 位于这条内部链的外侧；若再附加 clickable/indication，额外高亮可能绕过按钮内置裁剪。先移除重复交互，不在外面继续堆 clip 来补救。
+- **自定义圆角交互表面**：按同一视觉边界组织为“外部间距/尺寸 → `squircleSurface`（填色并裁剪）→ 唯一 clickable/selectable/toggleable 及其 indication → 内容内边距”。背景、clip 与高亮使用一致的几何边界，圆角值和分角方向一致；大小/缩放动画时也共同变化。原生组件不要再套这条自定义链。
+- `squircleBackground` 或 `background(color, shape)` 只绘制背景，不裁剪后续高亮；`clickable → squircleSurface` 会把外层 indication 留在内层裁剪之外。`clipToBounds()` 只有矩形裁剪，不能解决圆角四角突出。不要靠减小 alpha 或随意换圆角掩盖边界错误。
+- **大父容器 + 小按钮**：不要让整行 Box/Row 的 clickable 或 sibling pressed 遮罩负责仅属于小按钮的反馈。若产品本来就是整行 option，则行是交互表面，按行/所在分组卡片边界裁剪，不能误缩到文字或尾部图标。
+- **分组行**：原生 Card 已裁剪子项；拆成 lazy 段后，首/末段负责外轮廓圆角，中段可保持矩形。不能让每一行都画一个超出分组轮廓的矩形遮罩，也不需要给所有中段额外圆角。
+- **手动 indication**：只有确需自定义组件时才单独放置，置于同一裁剪内部并观察该组件自己的 InteractionSource；避免与 clickable 的默认 indication 重复。阴影与装饰可处于裁剪之外，但按压高亮必须在视觉表面内。
+
+modifier 的先后会改变布局、绘制与点击范围，参见 [Compose modifier 顺序](https://developer.android.com/develop/ui/compose/modifiers#order-of-modifiers-matters)。先找实际绘制高亮的节点，再找其外侧裁剪；仅确认某个后代“有圆角”不够。
+
+**触摸范围单独验收**：Compose 可为过小控件把最小触摸目标扩展到视觉 bounds 外；这不要求高亮也扩大，更不是四角漏色的理由。clip 不能作为“触摸严格符合圆角轮廓”的保证。通过合适的组件尺寸、间隔和单一点击所有者避免邻项误触，不全局关闭最小触摸目标或仅为修视觉而缩小可点击区。[Compose 触摸目标说明](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-touch-target-sizes)
+
+复现时分别按中心、四角、边缘与相邻留白，并检查拖动转滚动、松手取消及缩放后的反馈。观察正常/按下/释放帧的高亮轮廓，同时记录实际命中的动作与次数；看到矩形漏角可认定视觉裁剪不符合目标，但缺少运行证据时不能断言是哪层 modifier 导致。
 
 ### Hold only the popup trigger
 

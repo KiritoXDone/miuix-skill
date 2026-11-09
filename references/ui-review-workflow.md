@@ -47,6 +47,7 @@ Assign each observed problem to one or more categories before editing:
 | Component selection | Hand-built control, Material component, wrong Overlay/Window variant | Scenario/component catalogs and matching docs |
 | Spacing and shape | Uneven rhythm, clipping, arbitrary radii | Component Defaults, existing project spacing, Example composition |
 | Color and typography | Poor contrast, literal colors, inconsistent scale | [Design language and Defaults](design-language.md), theme source, component defaults |
+| Feedback bounds | Rectangular highlight, protruding corners, whole-row flash around a small button | [Clipping and interaction bounds](styling-icons-and-effects.md#feedback-bounds-and-corner-clipping); locate the indication node and its enclosing shape before changing colors |
 | Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and KernelSU examples](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication and nested click ownership |
 | State and interaction | Wrong state owner, disabled row still clickable, broken dismissal | Demo, integrated Example, and source contract |
 | Cross-page scale | Home looks correct but detail screens are enlarged | [Density ownership](setup-and-theme.md#density-ownership-across-navigation); compare runtime density/fontScale, providers and matching component defaults |
@@ -98,7 +99,7 @@ Compilation proves API and type compatibility, not visual correctness. If no ren
 When the change affects interactive controls, text, navigation, or effects, add the checks that apply to the target platforms:
 
 - Preserve component semantics and labels. Give meaningful icons a localized `contentDescription`; keep decorative icons out of the accessibility traversal, and do not replace a component with a raw clickable glyph when the component already owns role/state semantics.
-- Check touch and pointer targets, focus order, keyboard activation, hover/press feedback, and the enabled/disabled announcement. Verify custom slots because their semantics and `enabled` state are not inferred automatically.
+- Check touch and pointer targets separately from visible feedback bounds. Test the center, corners, edges and adjacent gaps; keep the highlight within its surface while preserving adequate touch targets. Check focus order, keyboard activation, hover/press feedback, and the enabled/disabled announcement. Verify custom slots because their semantics and `enabled` state are not inferred automatically.
 - Test long localized strings, RTL layout/direction, text scaling or platform dynamic type, and IME/focus behavior. Do not use a screenshot at one font scale or locale as proof that the layout is robust.
 - Recheck contrast and state communication in light, dark, and dynamic color modes. Error, selected, disabled, loading, and focus states must remain distinguishable without color alone.
 - Make errors and loading states available as visible text and/or semantics when they need to be announced; do not make a tooltip the only channel for an error, status, or required action.

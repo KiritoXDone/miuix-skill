@@ -35,7 +35,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 | 设置行、单选对话框、Dropdown/Spinner | [preferences-and-menus](references/preferences-and-menus.md) |
 | Overlay/Window、长对话框、BottomSheet | [overlays-and-windows](references/overlays-and-windows.md) |
 | 自然语言配色、主题语义色、状态色 | [color-lookup](references/color-lookup.md) + [design-language](references/design-language.md) |
-| 按压/选中反馈、图标、squircle、blur、自定义绘制 | [styling-icons-and-effects](references/styling-icons-and-effects.md) |
+| 按压/选中反馈、高亮越界/四角突出、图标、squircle、blur、自定义绘制 | [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 路由、返回栈、转场、预测返回 | [miuix-nav](references/miuix-nav.md) |
 | 版本基线与源码核验 | [source-verification](references/source-verification.md) |
 
@@ -54,7 +54,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 - **密度一致性**：首页、二级页面和整个 `NavDisplay` 共享应用缩放入口；无自定义缩放时沿用平台 density。页面继承一次计算的结果，不局部重乘或重置。整体偏大先查 density/fontScale 与样式来源，按 [密度排查](references/setup-and-theme.md#density-ownership-across-navigation) 取得证据后再改尺寸。
 - **安全区**：记录 top/bottom/start/end/IME 各由谁处理，一次消费。不要把 Mishka 的“只取 top + 尾部 Spacer”套到有 bottomBar 的页面。`PullToRefresh.contentPadding` 不会替列表加 padding。
 - **层级与颜色**：小设置组可用 `SmallTitle + Card`；大动态分组按行 lazy 化。默认样式优先；应用状态色集中定义，不杜撰 `MiuixTheme.colorScheme.warning/success`。
-- **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 裁住按压高亮。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。
+- **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 裁住按压高亮，裁剪须在高亮绘制层外侧；原生 Button 不外加同动作 clickable/indication。高亮越界按 [边界排查](references/styling-icons-and-effects.md#feedback-bounds-and-corner-clipping) 检查，触摸目标与视觉范围分别验收。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。
 - **性能**：布局/绘制所需的帧级状态在相应阶段读取。拆分大 lazy item、缓存真实依赖、保持 key 语义；`@Immutable` 是真实性承诺，普通 `List` 不等于必然不能 skip。按实际编译器和 profiling 判断。
 - **导航**：`NavigationBar/Rail` 是导航外观，`miuix-nav` 管理返回栈。宽窄布局共享选中状态；持久化路线验证 `@Serializable`；不要凭旧模块名推断 Navigation 3 scene/result API。
 

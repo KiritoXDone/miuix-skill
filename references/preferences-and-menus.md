@@ -14,6 +14,8 @@ Choose Overlay versus Window lifetime with [Overlay and Window Components](overl
 
 按钮/选项的反馈遵循 [pressed、selected 与 held 的区别](styling-icons-and-effects.md#pressed-selected-and-held-state)。选中值传给 `selected` / `checked` / `selectedIndex`；`holdDownState` 仅用于需要保持反馈的弹窗入口。原生 Preference 已负责同一动作的点击与状态反馈，不在外面再包一层 toggleable/clickable。
 
+选项行的高亮可以覆盖整行，但应在所属 Card 或 lazy 分段的外轮廓内；独立小按钮的高亮应止于按钮表面。矩形漏角或范围过大时，按 [反馈边界检查](styling-icons-and-effects.md#feedback-bounds-and-corner-clipping) 定位 indication 与裁剪层。
+
 ## Choose a Menu Variant
 
 | Need | Choose |

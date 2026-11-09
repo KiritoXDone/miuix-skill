@@ -110,11 +110,11 @@ For a bottom/rail navigation shell, derive selection from the application's chos
 Evidence: `SettingsPage.kt` and the files under `example/shared/src/commonMain/kotlin/component/`.
 
 - Build a settings page from scrollable sections. Use the [Preference family guide](preferences-and-menus.md#choose-the-family) to distinguish a complete setting row from a standalone control or menu.
-- Use `SmallTitle` to label a section and `Card` to group related Preference components.
+- Use `Card` to group related Preference components. Add a short `SmallTitle` only when the group needs a label; omit redundant section headings.
 - Put related `SwitchPreference`, `CheckboxPreference`, `ArrowPreference`, dropdown, and slider rows in the same Card rather than styling every row as an unrelated surface.
-- Use `summary` for consequences or context, not to repeat the title.
+- Omit `summary` unless the user needs a concise status, input requirement or next-step hint. Never render feature explanations or developer instructions; follow [UI copy rules](design-language.md#user-facing-copy).
 - Show a small dependent setting conditionally with `AnimatedVisibility` when appropriate. For long dynamic groups, use row-level lazy items and the [performance workflow](performance-and-animation.md), while keeping state at the screen owner.
-- Hide a dependent setting when it is irrelevant or unsupported; leave it visible but disabled when discoverability matters and the summary can explain the prerequisite. See [Preference enabled and dependent states](preferences-and-menus.md#enabled-and-dependent-states).
+- Hide a dependent setting when it is irrelevant or unsupported; leave it visible but disabled when discoverability matters and a short prerequisite hint is actually needed. See [Preference enabled and dependent states](preferences-and-menus.md#enabled-and-dependent-states).
 - Use the target project's layout tokens for group margins; see [Design language and Defaults](design-language.md) for semantic styling decisions.
 
 For large/dynamic groups, prefer the conditional [segmented-card approach](performance-and-animation.md#lazy-boundaries-and-grouped-cards); it is not needed for this small group.
@@ -133,13 +133,11 @@ fun SettingsScreen(
     ) { innerPadding ->
         LazyColumn(contentPadding = innerPadding) {
             item {
-                SmallTitle(text = "General")
                 Card(
                     modifier = Modifier.padding(groupPadding),
                 ) {
                     SwitchPreference(
-                        title = "Feature",
-                        summary = "Explain what enabling it changes",
+                        title = "Notifications",
                         checked = enabled,
                         onCheckedChange = onEnabledChange,
                     )

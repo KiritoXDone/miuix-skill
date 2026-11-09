@@ -28,6 +28,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 |---|---|
 | 依赖、主题、完整 App、Preview、跨页面 DPI/布局密度 | [setup-and-theme](references/setup-and-theme.md) |
 | 页面创建、设置分组、组合方式 | [usage-patterns](references/usage-patterns.md) + [design-language](references/design-language.md) |
+| 界面文案、标题/按钮/标签、提示与说明精简 | [界面文案规则](references/design-language.md#user-facing-copy) |
 | 已有 UI 改造、截图审查、无障碍 | [ui-review-workflow](references/ui-review-workflow.md) |
 | Scaffold、滚动、搜索、宽屏、刘海、键盘、安全区 | [page-layout-and-insets](references/page-layout-and-insets.md) |
 | 长列表、分段卡片、展开收起、帧级动画、Flow 与稳定性 | [performance-and-animation](references/performance-and-animation.md) |
@@ -50,6 +51,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 
 ## 关键约束
 
+- **界面文案**：只显示最终用户需要的文字。标题、按钮、标签使用短语，必要提示可用短句；需求说明、功能解释和实现理由写代码注释，不进入 UI。summary、副标题和次级标签默认省略，让布局表达层级，详见 [文案规则](references/design-language.md#user-facing-copy)。
 - **状态与宿主**：业务状态上提；Overlay 使用页面 `Scaffold` popup host，Window 独立于该 host。调用方落实选中、启用、提交、取消、返回与关闭回调，不把 `onDismissFinished` 当作关闭请求。
 - **交互反馈**：分清瞬时 pressed、业务 selected/checked 与受控保持 held；以独立交互表面为单位统一管理动作入口、反馈与形状边界，适用于按钮、卡片、列表/菜单项和嵌套区域；优先组件公开交互 API、自带 indication 和 Defaults。同一动作不叠加点击层、按压遮罩或缩放。参考 [交互状态与反馈规则](references/styling-icons-and-effects.md#pressed-selected-and-held-state)，`holdDownState` 不绑定业务选中值。
 - **密度一致性**：首页、二级页面和整个 `NavDisplay` 共享应用缩放入口；无自定义缩放时沿用平台 density。页面继承一次计算的结果，不局部重乘或重置。整体偏大先查 density/fontScale 与样式来源，按 [密度排查](references/setup-and-theme.md#density-ownership-across-navigation) 取得证据后再改尺寸。
@@ -64,6 +66,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 这是唯一交付清单；参考文件补充各领域细节。
 
 - 交付与请求范围一致的代码：局部组件、完整页面或可运行 App。包含必要 import、状态、回调和宿主假设；不附带无关的主题/导航重建。
+- 逐段执行界面文案检查：“最终用户需要读到吗？”不需要就删；必要文字再检查短语/短句、重复信息和空白占位。
 - 保留业务行为与项目约定。任何自定义 helper 都必须已有实现，或在本次实现中提供，不能伪装成库 API。
 - 对实际代码变更运行相关静态检查与最小目标编译。布局、弹窗、手势、宽屏、性能变更按风险补充预览/设备/trace 验证。
 - 分别报告 **源码/API 核对、编译、视觉/设备、性能验证**。没有运行环境就明确未验证；截图不能证明交互或流畅度，编译不能证明视觉正确。

@@ -5,7 +5,7 @@
 | User need | Prefer | Why |
 |---|---|---|
 | Binary/value control inside a form or custom layout | Basic `Switch`, `Checkbox`, `RadioButton`, or `Slider` | The surrounding layout owns the label and grouping |
-| Complete settings row with title, summary, and row interaction | Matching `*Preference` component | The component owns HyperOS-style row structure, enabled state, and trailing control/value |
+| Complete settings row with a short title, optional summary, and row interaction | Matching `*Preference` component | The component owns HyperOS-style row structure, enabled state, and trailing control/value |
 | Plain text option selection in a settings row | `OverlayDropdownPreference` or `WindowDropdownPreference` | Direct `List<String>` + selected-index API and current-value display |
 | Rich options with icons/summaries, or spinner dialog mode | `OverlaySpinnerPreference` or `WindowSpinnerPreference` | Uses richer `DropdownItem` content and spinner-specific presentation |
 | Standalone anchored action menu rather than a settings row | `*DropdownMenu` family | The caller owns the anchor and menu action semantics |
@@ -58,7 +58,7 @@ There is no dedicated `docs/demo/` file, but the tagged component doc contains c
 
 - Public Preference components expose `enabled`. With `enabled = false`, the row is not clickable, built-in trailing controls such as the `Switch` are also disabled, and title/summary/action colors resolve through disabled roles. The controlled value remains the caller's state and should not be reset merely because the row is disabled.
 - Pass the same prerequisite to every interactive child you supply yourself. A custom `startAction`, `endActions`, or `bottomAction` slot cannot infer how its nested buttons should be disabled.
-- For a small dependent row, `AnimatedVisibility` can express conditional presence. Large dynamic groups should follow [row-level lazy guidance](performance-and-animation.md). Hide the setting when irrelevant or unsupported. Keep the row visible with `enabled = false` when discoverability matters, and explain the prerequisite in `summary`.
+- For a small dependent row, `AnimatedVisibility` can express conditional presence. Large dynamic groups should follow [row-level lazy guidance](performance-and-animation.md). Hide the setting when irrelevant or unsupported. Keep the row visible with `enabled = false` when discoverability matters, and show a short prerequisite hint in `summary` only if users need it to proceed. Omit feature explanations and redundant helper text; see [UI copy rules](design-language.md#user-facing-copy).
 - For linked settings, derive child `enabled`/visibility from the parent value while hoisting both values to the same owner. Do not duplicate a second local Boolean inside the Preference.
 
 ## Dropdown Menu Components (miuix-preference/menu/)

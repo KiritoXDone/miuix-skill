@@ -46,6 +46,7 @@ Assign each observed problem to one or more categories before editing:
 | Structure and hierarchy | Weak grouping, too many containers, unclear primary action | Closest integrated Example page/section and component choice |
 | Component selection | Hand-built control, Material component, wrong Overlay/Window variant | Scenario/component catalogs and matching docs |
 | Spacing and shape | Uneven rhythm, clipping, arbitrary radii | Component Defaults, existing project spacing, Example composition |
+| UI copy | Developer explanations, sentence-length labels, redundant subtitles or summaries | [User-facing copy](design-language.md#user-facing-copy); retain only text the end user needs |
 | Color and typography | Poor contrast, literal colors, inconsistent scale | [Design language and Defaults](design-language.md), theme source, component defaults |
 | Feedback bounds | Rectangular highlight, protruding corners, whole-row flash around a small button | [Clipping and interaction bounds](styling-icons-and-effects.md#feedback-bounds-and-corner-clipping); locate the indication node and its enclosing shape before changing colors |
 | Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and feedback](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication, component-owned interactions and per-surface feedback/clip ownership, including independent nested targets |
@@ -86,7 +87,7 @@ Common failed approaches include arbitrary spacing until one screenshot looks ri
 
 Validate in layers appropriate to the change:
 
-1. Review the diff for accidental behavior or scope changes.
+1. Review the diff for accidental behavior or scope changes. Audit all rendered strings and relevant resources: does the end user need each text? Apply [UI copy rules](design-language.md#user-facing-copy), remove unnecessary labels/explanations and their empty layout space, and verify titles/buttons/tags are phrases.
 2. Run format/static checks used by the target project.
 3. Compile the smallest affected target or variant.
 4. For visual changes, render or inspect a preview, screenshot, emulator, or device at the relevant state.

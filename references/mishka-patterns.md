@@ -19,7 +19,7 @@ Mishka 指南中的 `app/...` 链接需要从**仓库根**解析，不是 `docs/
 
 | 指南中的经验 | 可复用决策 | 不能泛化的部分 | 实施参考 |
 |---|---|---|---|
-| 三种 squircle 用途 | 只为必要的 fill/clip 建图层，点击涟漪需裁剪 | 所有 UI 都手工加圆角 | [styling](styling-icons-and-effects.md) |
+| 三种 squircle 用途 | 只为必要的 fill/clip 建图层，按压高亮需裁剪 | 所有 UI 都手工加圆角 | [styling](styling-icons-and-effects.md) |
 | 页面 top padding + 尾 spacer | 明确每条边的 inset 所有者 | 有 bottomBar 也丢弃 bottom padding | [page layout](page-layout-and-insets.md) |
 | 宽屏 rail 与内容居中 | shell 判断统一、列表命中区保持完整 | 600/800 dp 变成库强制值 | [page layout](page-layout-and-insets.md) |
 | 分段卡片 | 大动态组按可见行 lazy 组合 | 两三个静态设置行也强制拆段 | [performance](performance-and-animation.md) |

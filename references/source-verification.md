@@ -84,6 +84,8 @@ These files underpin multiple components. They're read-on-demand, not listed per
 | `miuix-blur/.../TextureEffect.kt` | Uniform and progressive texture-blur modifier overloads |
 | `miuix-blur/.../ProgressiveBlur.kt` | `ProgressiveBlur` descriptor and edge-fade presets |
 | `miuix-blur/.../BackdropEffects.kt` | Custom backdrop effect-block APIs, including progressive blur |
+| `miuix-ui/.../utils/MiuixIndication.kt` | Theme-provided press/hold/hover/focus highlight rendering |
+| `miuix-ui/.../utils/PressFeedback.kt` | Explicit Sink/Tilt effects; verify component support before applying |
 | `miuix-ui/.../utils/Overscroll.kt` | Modifier overscroll API, real-gesture gating, and stale-offset recovery |
 | `miuix-ui/.../utils/OverscrollFactory.kt` | Theme-level `MiuixOverscrollFactory` / `MiuixOverscrollEffect` behavior |
 
@@ -106,3 +108,5 @@ Read [Example-derived usage patterns](usage-patterns.md) before translating thes
 ## Application practice evidence
 
 [Mishka patterns](mishka-patterns.md) pins the user-supplied UI guide and maps application helpers to their actual owners. Do not resolve Mishka `app/...` paths against Miuix. Official Example and Mishka guide different application choices; the target project decides spacing, breakpoints and helper architecture.
+
+For button/option feedback, [KernelSU interaction examples](styling-icons-and-effects.md#kernelsu-evidence-and-limits) pins the inspected Miuix UI implementation and separates its application choices from the library contract.

@@ -12,6 +12,8 @@
 
 Choose Overlay versus Window lifetime with [Overlay and Window Components](overlays-and-windows.md#choose-the-host-first). For settings-page grouping and state ownership, continue with [Example-derived usage patterns](usage-patterns.md#settings-and-grouped-content). Verify the chosen row's exact call shape in its doc/demo/source through [Source verification](source-verification.md).
 
+按钮/选项的反馈遵循 [pressed、selected 与 held 的区别](styling-icons-and-effects.md#pressed-selected-and-held-state)。选中值传给 `selected` / `checked` / `selectedIndex`；`holdDownState` 仅用于需要保持反馈的弹窗入口。原生 Preference 已负责同一动作的点击与状态反馈，不在外面再包一层 toggleable/clickable。
+
 ## Choose a Menu Variant
 
 | Need | Choose |

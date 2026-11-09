@@ -47,6 +47,7 @@ Assign each observed problem to one or more categories before editing:
 | Component selection | Hand-built control, Material component, wrong Overlay/Window variant | Scenario/component catalogs and matching docs |
 | Spacing and shape | Uneven rhythm, clipping, arbitrary radii | Component Defaults, existing project spacing, Example composition |
 | Color and typography | Poor contrast, literal colors, inconsistent scale | [Design language and Defaults](design-language.md), theme source, component defaults |
+| Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and KernelSU examples](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication and nested click ownership |
 | State and interaction | Wrong state owner, disabled row still clickable, broken dismissal | Demo, integrated Example, and source contract |
 | Cross-page scale | Home looks correct but detail screens are enlarged | [Density ownership](setup-and-theme.md#density-ownership-across-navigation); compare runtime density/fontScale, providers and matching component defaults |
 | Insets and adaptation | Content under bars, IME overlap, broken wide layout | Scaffold contract, page shell, target platform behavior |

@@ -7,7 +7,7 @@
 小而固定的设置组保留 `item { Card { ... } }` 即可。行数大、动态展开或 profiling 显示整组组合成本高时，让每一行成为独立 lazy item，而视觉上仍拼成一张 Card：
 
 - 使用稳定且全局唯一的业务 key；首段仅圆顶角、末段仅圆底角，单行同时圆上下角，中段矩形无内部间隔。
-- 圆角段用 `squircleSurface` 裁住子项点击涟漪；中段可以直接 background。同步 Card 的容器与内容色，不漏 `LocalContentColor`。
+- 圆角段用 `squircleSurface` 裁住子项按压高亮；中段可以直接 background。同步 Card 的容器与内容色，不漏 `LocalContentColor`。
 - Preference 自带内边距，避免段容器重复加；只在整组外围应用原有 margin。拆段后复核语义遍历和焦点顺序，不能仅凭外观相同认为行为相同。
 - 空组不产生装饰 item；条件行先形成带稳定身份的行模型。静态文本卡、hero/视差组合不为“lazy 化”强行拆分。
 

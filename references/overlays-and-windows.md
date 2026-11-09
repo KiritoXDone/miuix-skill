@@ -54,7 +54,7 @@ At v0.9.4, the shared `DialogContentLayout.kt` caps large-screen height but leav
 
 Give the body a viewport-aware maximum height, a weighted scroll area (`weight(1f, fill = false)` in a bounded Column), and non-weighted actions. Mishka's 500 dp limit is an application value; account for the actual window and IME instead of hardcoding it for every platform. Recheck long text, large font, compact landscape and keyboard-open states.
 
-For full-width option rows, distinguish the dialog's `insideMargin` from each row's own horizontal padding; removing both can put labels against the edge. Mishka uses `DpSize(0.dp, 24.dp)` around rows that already inset their text, preserving vertical title space. A held trigger can use the verified row `holdDownState` contract; clear it on the appropriate dismissal lifecycle, not on an unrelated row.
+For full-width option rows, distinguish the dialog's `insideMargin` from each row's own horizontal padding; removing both can put labels against the edge. Mishka uses `DpSize(0.dp, 24.dp)` around rows that already inset their text, preserving vertical title space. For a held trigger, follow [popup-trigger feedback](styling-icons-and-effects.md#hold-only-the-popup-trigger): simple wrappers can bind holdDownState to show, while native dropdowns own exit-completion release. Do not conflate held feedback with a selected option.
 
 For immediate mutually exclusive selection use the real [WindowDropdownDialog](preferences-and-menus.md#standalone-single-choice-dialog) instead of rebuilding a confirm-based form unless the product explicitly needs a draft/confirm interaction.
 

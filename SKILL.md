@@ -11,7 +11,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 
 1. 读取目标项目相关约定、Gradle/version catalog 和现有页面，确认 Miuix 版本、平台/source set、主题、导航、状态与 inset 的所有者。不要为使用本 skill 擅自升级依赖。
 2. 当前维护基线是 **Miuix v0.9.4 / `39c40f99`**。项目使用其他版本时，以其确切 tag/commit 为准；未知版本时标明假设。版本与路径见 [source-verification](references/source-verification.md)。
-3. 分清三类证据：官方组件契约、Example/Mishka 的应用模式、目标项目约定。Mishka 的 helper、尺寸、断点和业务逻辑不是 Miuix 默认规范，移植前读 [mishka-patterns](references/mishka-patterns.md)。
+3. 分清三类证据：官方组件契约、Example/Mishka/KernelSU 的应用模式、目标项目约定。Mishka 的 helper、尺寸、断点和业务逻辑不是 Miuix 默认规范，移植前读 [mishka-patterns](references/mishka-patterns.md)。
 4. 有截图或预览时结合代码定位问题。先确认层级、宿主、状态和安全区，再改间距、颜色和装饰。
 
 | 代码上下文 | 实现边界 |
@@ -35,7 +35,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 | 设置行、单选对话框、Dropdown/Spinner | [preferences-and-menus](references/preferences-and-menus.md) |
 | Overlay/Window、长对话框、BottomSheet | [overlays-and-windows](references/overlays-and-windows.md) |
 | 自然语言配色、主题语义色、状态色 | [color-lookup](references/color-lookup.md) + [design-language](references/design-language.md) |
-| 图标、squircle、blur、自定义绘制 | [styling-icons-and-effects](references/styling-icons-and-effects.md) |
+| 按压/选中反馈、图标、squircle、blur、自定义绘制 | [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 路由、返回栈、转场、预测返回 | [miuix-nav](references/miuix-nav.md) |
 | 版本基线与源码核验 | [source-verification](references/source-verification.md) |
 
@@ -50,10 +50,11 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 ## 关键约束
 
 - **状态与宿主**：业务状态上提；Overlay 使用页面 `Scaffold` popup host，Window 独立于该 host。调用方落实选中、启用、提交、取消、返回与关闭回调，不把 `onDismissFinished` 当作关闭请求。
+- **交互反馈**：分清瞬时 pressed、业务 selected/checked 与弹窗入口 held；优先组件自带 indication 和 Defaults。同一动作不叠加点击层、按压遮罩或缩放。参考 [KernelSU 交互实践](references/styling-icons-and-effects.md#pressed-selected-and-held-state)，`holdDownState` 不绑定业务选中值。
 - **密度一致性**：首页、二级页面和整个 `NavDisplay` 共享应用缩放入口；无自定义缩放时沿用平台 density。页面继承一次计算的结果，不局部重乘或重置。整体偏大先查 density/fontScale 与样式来源，按 [密度排查](references/setup-and-theme.md#density-ownership-across-navigation) 取得证据后再改尺寸。
 - **安全区**：记录 top/bottom/start/end/IME 各由谁处理，一次消费。不要把 Mishka 的“只取 top + 尾部 Spacer”套到有 bottomBar 的页面。`PullToRefresh.contentPadding` 不会替列表加 padding。
 - **层级与颜色**：小设置组可用 `SmallTitle + Card`；大动态分组按行 lazy 化。默认样式优先；应用状态色集中定义，不杜撰 `MiuixTheme.colorScheme.warning/success`。
-- **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 包住涟漪。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。
+- **形状与效果**：纯填色用 `squircleBackground`；需要裁剪时用 `squircleClip`；可点击的圆角表面用 `squircleSurface` 裁住按压高亮。组件已有裁剪时不重复添加。模糊要有支持检查及不透明降级。
 - **性能**：布局/绘制所需的帧级状态在相应阶段读取。拆分大 lazy item、缓存真实依赖、保持 key 语义；`@Immutable` 是真实性承诺，普通 `List` 不等于必然不能 skip。按实际编译器和 profiling 判断。
 - **导航**：`NavigationBar/Rail` 是导航外观，`miuix-nav` 管理返回栈。宽窄布局共享选中状态；持久化路线验证 `@Serializable`；不要凭旧模块名推断 Navigation 3 scene/result API。
 

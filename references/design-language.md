@@ -1,6 +1,6 @@
 # Design Language and Defaults
 
-Use this reference when creating, restyling, or reviewing a Miuix interface. Resolve root/host ownership in [Project setup and theme](setup-and-theme.md), then use [Example-derived usage patterns](usage-patterns.md) for composition. The token and Defaults names below are verified at the `0.9.4` stable snapshot. The hierarchy guidance is a practical decision rule derived from Miuix source defaults and the first-party Example; it is not a substitute for a future formal design specification.
+Use this reference when creating, restyling, or reviewing a Miuix interface. Resolve root/host ownership in [Project setup and theme](setup-and-theme.md), then use [UI composition patterns](usage-patterns.md) for composition. The token and Defaults names below are verified at the `0.9.4` stable snapshot. Composition choices depend on the product hierarchy and the selected component contracts; example applications supply optional evidence.
 
 Contents: [decision order](#decision-order) · [surface and color](#surface-and-color-roles) · [typography](#typography-roles) · [component Defaults](#component-defaults) · [hierarchy](#hierarchy-and-grouping) · [errors and loading](#error-and-failure-states) · [state and async](#state-and-async-ownership) · [customization](#when-customization-is-justified)
 
@@ -25,7 +25,7 @@ For a natural-language request such as “蓝色主按钮” or “灰色摘要�
 | UI role | Start with | Notes |
 |---|---|---|
 | Page canvas | `background` + `onBackground` | Use for the root page and content placed directly on it |
-| General elevated or chrome surface | `surface` + `onSurface` | Follow the closest Example or component default before applying it manually |
+| General elevated or chrome surface | `surface` + `onSurface` | Follow the selected component default and the intended surface role |
 | Grouped content container | `CardDefaults.defaultColors()` | At the stable snapshot, Card already uses `surfaceContainer` + `onSurfaceContainer` |
 | Primary action or selected control | The component's primary/selected Defaults | For example, use `ButtonDefaults.buttonColorsPrimary()` instead of recreating primary and disabled colors |
 | Preference summary | `BasicComponentDefaults.summaryColor()` | Its default uses `onSurfaceVariantSummary` and handles disabled state |
@@ -34,13 +34,13 @@ For a natural-language request such as “蓝色主按钮” or “灰色摘要�
 | Dialog or popup scrim | Component default | The window and overlay implementations use the semantic `windowDimming` role |
 | Disabled content | The component's disabled state/defaults | Do not simulate disabled UI with arbitrary alpha; Miuix has role-specific disabled tokens |
 
-Do not pair an `on*` color with an unrelated container. Do not copy literal colors from the Example: theme modes and dynamic color can change their rendered values.
+Do not pair an `on*` color with an unrelated container. Avoid copying literal colors from screenshots or examples: theme modes and dynamic color can change their rendered values.
 
-Application status roles such as warning/healthy/latency belong in a centralized app-owned palette with light/dark handling. Mishka calls its palette `StatusColors`; that name and its properties are not Miuix APIs. Avoid scattered literal colors or inventing library roles.
+Application status roles such as warning/healthy/latency belong in a centralized app-owned palette with light/dark handling. Keep additional roles application-owned and distinct from Miuix tokens. Avoid scattered literal colors or inventing library roles.
 
 ## Typography Roles
 
-Let Miuix components choose typography unless the product requires custom text. For explicit `Text`, choose from `MiuixTheme.textStyles` after comparing the target project's existing hierarchy and the closest Example.
+Let Miuix components choose typography unless the product requires custom text. For explicit `Text`, choose from `MiuixTheme.textStyles` by the target project's content hierarchy and readability requirements.
 
 | Content | Preferred starting point |
 |---|---|
@@ -70,7 +70,7 @@ Search the selected component source for its `*Defaults` object before adding a 
 - Group related settings under `SmallTitle` + `Card`; keep unrelated actions separate. For large dynamic groups, preserve the visual grouping with [independent lazy rows](performance-and-animation.md), rather than composing the whole group at once.
 - In the pinned source, Card is a plain `Column` with `CardDefaults.InsideMargin = 0.dp`; it does not insert gaps or Dividers between children. Preference rows provide their own internal padding and disabled styling. Do not add row spacing or separators by habit—add a Divider only when the grouping remains ambiguous.
 - Place `SmallTitle` before its Card for a section label. Its own Defaults provide label padding; it is not a row inside the Card and there is no public `SectionHeader` component at this tag.
-- The Example's repeated 12 dp Card/section margins are application composition evidence, not a hard Miuix spacing rule. Reuse target-project spacing first; use 12 dp only as a starting point when no convention exists and verify the resulting hierarchy.
+- Use project layout tokens for page/group spacing. When none exist, choose a coherent scale from content density, viewport and accessibility requirements, then validate it across relevant layouts.
 - Avoid nested Cards for visual decoration. Nest only when the inner Card has a distinct containment or interaction role that remains understandable in accessibility traversal.
 - Use the title for the setting or action and the summary for consequence, status, or context. Do not repeat the same wording in both.
 - Keep the primary action visually dominant and secondary/destructive actions distinguishable through supported component roles, placement, and wording.

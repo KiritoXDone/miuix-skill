@@ -52,9 +52,9 @@ The default large-screen breakpoint is 840 dp wide and 480 dp high. Centered dia
 
 At v0.9.4, the shared `DialogContentLayout.kt` caps large-screen height but leaves the compact content height unspecified. Do not assume a long body will automatically scroll while keeping actions visible.
 
-Give the body a viewport-aware maximum height, a weighted scroll area (`weight(1f, fill = false)` in a bounded Column), and non-weighted actions. Mishka's 500 dp limit is an application value; account for the actual window and IME instead of hardcoding it for every platform. Recheck long text, large font, compact landscape and keyboard-open states.
+Give the body a viewport-aware maximum height, a weighted scroll area (`weight(1f, fill = false)` in a bounded Column), and non-weighted actions. Derive the limit from the actual window, safe areas and IME; reuse a product limit only if it remains valid under these constraints. Recheck long text, large font, compact landscape and keyboard-open states.
 
-For full-width option rows, distinguish the dialog's `insideMargin` from each row's own horizontal padding; removing both can put labels against the edge. Mishka uses `DpSize(0.dp, 24.dp)` around rows that already inset their text, preserving vertical title space. For a held trigger, follow [popup-trigger feedback](styling-icons-and-effects.md#hold-only-the-popup-trigger): simple wrappers can bind holdDownState to show, while native dropdowns own exit-completion release. Do not conflate held feedback with a selected option.
+For full-width option rows, distinguish the dialog's `insideMargin` from each row's own horizontal padding; removing both can put labels against the edge. Let full-width rows own their text insets, and preserve the title and action spacing required by the selected dialog layout. For a held trigger, follow [held-feedback lifecycle](styling-icons-and-effects.md#held-feedback-lifecycle): simple wrappers can bind holdDownState to show, while native dropdowns own exit-completion release. Do not conflate held feedback with a selected option.
 
 For immediate mutually exclusive selection use the real [WindowDropdownDialog](preferences-and-menus.md#standalone-single-choice-dialog) instead of rebuilding a confirm-based form unless the product explicitly needs a draft/confirm interaction.
 
@@ -63,9 +63,9 @@ For immediate mutually exclusive selection use the real [WindowDropdownDialog](p
 Verified in `miuix-ui/.../layout/BottomSheetContentLayout.kt` and `window/WindowBottomSheet.kt` at v0.9.4:
 
 - `defaultWindowInsetsPadding = true` installs `imePadding()`. Top status/caption/cutout values also participate in the maximum-height calculation; that calculation does not pad the content's bottom edge.
-- Inspect remaining content insets. Mishka adds the **bottom** of `systemBars.union(displayCutout)` to its content; `systemBars` includes caption-bar information. Do not add IME a second time if the host already owns it.
+- Inspect remaining content insets. When bottom system UI is not already accounted for, apply the needed bottom portion of `systemBars.union(displayCutout)`; `systemBars` includes caption-bar information. Do not add IME a second time if the host already owns it.
 - The default sheet is centered horizontally and width-limited (640 dp at this tag). Blindly padding just one side can shift its contents away from center. Still test narrow landscape, custom full-width sheets and side cutouts: “never handle horizontal insets” is not a universal rule.
 - Default internal margins are styling, not proof that system UI is avoided. Account for consumed insets and the actual platform window.
-- Loading-to-content and item-count changes can change wrap-content height abruptly. An application wrapper may animate measured content size with a verified Miuix `folmeSpring` spec; avoid competing with enter/exit/IME animation or clipping fixed actions. Mishka's `sheetContentSafePadding` and `sheetHeightTransition` are application helpers, not library functions.
+- Loading-to-content and item-count changes can change wrap-content height abruptly. An application wrapper may animate measured content size with a verified Miuix `folmeSpring` spec; avoid competing with enter/exit/IME animation or clipping fixed actions. Implement any additional inset/size wrapper within the application, using the actual host contract.
 
 Check open/close, focused field, IME dismissal, freeform/caption bars and resizes on the target platform before claiming this behavior verified.

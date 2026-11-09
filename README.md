@@ -2,15 +2,16 @@
 
 面向 Codex 等支持 `SKILL.md` 的编程助手，用于构建、优化和审查 Miuix / HyperOS 风格的 Compose Multiplatform 界面。
 
-在现有 miuix skill 基础上，结合 [Mishka UI 规范](https://github.com/YuKongA/Mishka/blob/91e17c02d6eadbca6752ed30014660e378dc9c33/docs/ui-guidelines.md)、[Miuix 官方文档](https://compose-miuix-ui.github.io/miuix/)与对应版本源码完善。Miuix 是独立开源组件库，不是小米官方 SDK。
+以 [Miuix 官方文档](https://compose-miuix-ui.github.io/miuix/)和对应版本源码为依据，围绕组件契约、页面组合、状态与交互组织通用指导。Miuix 是独立开源组件库，不是小米官方 SDK。
 
-## 本版重点
+## 能力范围
 
 - 精简入口与触发描述，按任务加载组件、布局、状态和性能参考。
 - 明确 Scaffold、底栏、IME、横屏缺口和 BottomSheet 的安全区归属。
 - 补充分段卡片、lazy key、展开/收起、布局 morph、帧级状态读取与不可见动画暂停。
 - 补全长对话框、原生单选弹窗、squircle 渲染选择与 blur 降级。
-- 区分 Miuix 公共 API、官方 Example 模式与 Mishka 专用 helper，不强制复制应用尺寸和业务规则。
+- 按产品需求选择布局、尺寸、自适应断点和状态模型；应用示例仅提供可选组合参考。
+- 统一跨页面密度与独立交互表面的反馈、手势和裁剪边界。
 - 修正 strong skipping 与普通集合的关系，避免虚假的 `@Immutable` 承诺。
 - 以 **v0.9.4 / `39c40f99`** 为维护基线，版本证据统一记录在源码核验指南。
 
@@ -47,7 +48,6 @@ Claude Code 可安装到 `~/.claude/skills/miuix`。其他支持该格式的工�
 | 主题 | 入口 |
 |---|---|
 | 技能路由、边界、交付要求 | [SKILL.md](SKILL.md) |
-| 实战来源与移植边界 | [mishka-patterns](references/mishka-patterns.md) |
 | 页面、安全区、搜索、自适应 | [page-layout-and-insets](references/page-layout-and-insets.md) |
 | 列表、状态、动画、性能 | [performance-and-animation](references/performance-and-animation.md) |
 | 页面组合 / 现有 UI 审查 | [usage-patterns](references/usage-patterns.md) / [ui-review-workflow](references/ui-review-workflow.md) |
@@ -59,6 +59,6 @@ Claude Code 可安装到 `~/.claude/skills/miuix`。其他支持该格式的工�
 
 ## 来源与维护
 
-原有本地 skill 的 README 指向 [limczhh/miuix-skill](https://github.com/limczhh/miuix-skill)，本仓库保留并改进其组件与源码参考。Mishka 的应用经验以固定提交引用，未随仓库附带其 helper 实现；来源、版本和归属见 [mishka-patterns](references/mishka-patterns.md)。
+本仓库沿用并改进原有技能的组件与源码参考。官方证据、原始技能归属与补充实践来源集中记录在 [源码核验指南](references/source-verification.md#application-practice-evidence)。
 
-最后核对：2026-11-08。API 证据采用固定 tag/commit，官方滚动文档用于发现与概念说明。维护时先核对版本差异，再调整相关参考；不要只批量替换版本号。贡献涉及 API 或性能结论时，请附准确来源和相应验证。
+指导内容更新：2026-11-09；当前版本基线的核对日期见源码核验指南。API 证据采用固定 tag/commit，官方滚动文档用于发现与概念说明。维护时先核对版本差异，再调整相关参考；不要只批量替换版本号。贡献涉及 API 或性能结论时，请附准确来源和相应验证。

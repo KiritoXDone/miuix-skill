@@ -1,6 +1,6 @@
-# Example-Derived Usage Patterns
+# UI Composition Patterns
 
-At the `0.9.4` stable snapshot, `docs/guide/best-practices.md` explicitly points to the project's Example application as a real-world demonstration of how Miuix components and design principles are applied. Treat it as a first-party reference implementation, while keeping source code authoritative for API contracts. Before applying these patterns, resolve theme and host ownership in [Project setup and theme](setup-and-theme.md) and follow the [Code Delivery Contract](../SKILL.md#code-delivery-contract).
+Use this reference to compose Miuix components into application roots, navigation shells, grouped content and popup flows. Select patterns by product needs and target architecture. Resolve theme/host ownership with [Project setup and theme](setup-and-theme.md); use the [Code Delivery Contract](../SKILL.md#code-delivery-contract) for the requested implementation scope.
 
 ## Contents
 
@@ -21,12 +21,12 @@ At the `0.9.4` stable snapshot, `docs/guide/best-practices.md` explicitly points
 | Component source and defaults | Exact parameters, behavior, host requirements, tokens | Contract; verify before writing uncertain or version-sensitive code |
 | Component doc | Intended purpose, supported states, conceptual guidance | Primary explanation; confirm stale or ambiguous details in source |
 | `docs/demo/<Component>Demo.kt` | Minimal runnable call shape and basic states | Starting point for a single component, not a complete page template |
-| `example/shared/` | Integrated page hierarchy, state flow, grouping, navigation, and adaptive layout | Preferred composition evidence; adapt it to the target app |
+| `example/shared/` | Integrated page hierarchy, state flow, grouping, navigation, and adaptive layout | Optional integration evidence; read only when it answers a concrete question |
 | Example-only effects and helpers | Showcase visuals and application infrastructure | Optional; do not present them as library requirements |
 
 ## Scenario to Integrated Example Map
 
-Use this map after choosing components. Unless a path starts with another root, resolve it under `example/shared/src/commonMain/kotlin/`. It identifies first-party integration evidence; it does not replace the component doc, demo, or source contract.
+Use this optional map when the docs and target project leave an integration question unresolved. Unless a path starts with another root, resolve it under `example/shared/src/commonMain/kotlin/`. It identifies first-party integration evidence; it does not replace the component doc, demo, or source contract.
 
 | Scenario | Start with | Extract |
 |---|---|---|
@@ -44,11 +44,10 @@ Use this map after choosing components. Unless a path starts with another root, 
 
 ## Derive a Pattern Before Coding
 
-1. Locate the closest integrated Example page or component section.
-2. Identify which parts are Miuix contracts, repeated composition patterns, and Example-specific choices.
-3. Compare the integrated use with the isolated `docs/demo/` file for each selected component.
-4. Adapt the pattern to the target project's state ownership, navigation, insets, and existing spacing.
-5. Verify exact names and parameters in the pinned pinned source before producing code.
+1. Map the required hierarchy, state ownership, navigation and insets in the target project.
+2. Choose the public components and check the relevant doc/demo for uncertain contracts.
+3. If integration remains unclear, inspect the nearest official example and separate public APIs from application helpers.
+4. Adapt the useful pattern to the product; verify uncertain names and parameters against the exact target source.
 
 Do not copy a whole Example file into an application. The Example includes navigation infrastructure, blur helpers, diagnostics, and showcase-only effects that most projects do not need.
 
@@ -77,12 +76,12 @@ Evidence: `MainPage.kt`, `SettingsPage.kt`, and `utils/PageUtils.kt`.
 
 In v0.9.4, choose the fixed `NavigationRail(expanded = ...)` overload or the expandable `NavigationRail(state = ...)` overload. The stateful overload requires a non-null state; do not pass `state = null`.
 
-Version 0.9.4 Example computes its own window policy from `LocalWindowInfo`: it uses the wide/split layout at `width >= 840.dp`, or at `width >= 600.dp` when `height / width < 1.2`; it expands the rail at `width >= 1200.dp`. These are Example application breakpoints, not Miuix component requirements.
+Choose breakpoints from the space required by navigation, content panes and accessibility settings. Rail expansion and content maximum width are separate product choices; none requires copying an example app's thresholds.
 
 - Reuse the target project's existing adaptive system. Android-only apps may already use a Window Size Class; multiplatform apps may use `LocalWindowInfo` or another shared policy. Keep the decision in one named function rather than scattering width checks through components.
 - Remember or hoist the selected destination/pager/back-stack before branching. Render `NavigationBar` and `NavigationRail` from that same state, so a resize changes chrome without resetting selection or creating two sources of truth.
 - Use compact/wide branches for materially different shells. If only the navigation component changes, keep page content and business state outside the branch.
-- Treat `600/840/1200.dp` as a source-derived starting point only when the product has no existing policy, then validate resizable windows, orientation changes, and foldable/tablet layouts.
+- Validate the chosen policy around its transition widths, including resizable windows, orientation changes and supported foldable/tablet layouts.
 
 ## `miuix-nav` Routing
 
@@ -104,7 +103,7 @@ NavDisplay(backStack = backStack) {
 
 Register every concrete route type; the DSL matches exact runtime classes. Use `NavController` when `push`, `pop`, `replace`, or `popUntil` reads more clearly than direct list operations. Built-in transitions are `NavTransitions.MiuixDefault`, `Modal`, and `None`; swipe-to-dismiss is opt-in through `entry(swipeDismiss = ...)`, and physical directions are not automatically mirrored for RTL. Use the complete [miuix-nav routing reference](miuix-nav.md) for saveable identity, `contentKey`, nested displays, multi-pane clipping, and v1 limitations.
 
-For a bottom/rail navigation shell, derive each item's `selected` and `onClick` from the same top-level page or pager state used by the content. Do not derive tab selection from a `NavDisplay` entry or create separate compact and wide selection states. Do not import the removed `androidx.navigation3` scene flow into v0.9.4 code.
+For a bottom/rail navigation shell, derive selection from the application's chosen navigation source of truth: pager state, a top-level destination, or an explicit route-to-destination mapping. Keep selection consistent with displayed content and shared across compact/wide shells; do not introduce independent states that can disagree. Do not import the removed `androidx.navigation3` scene flow into v0.9.4 code.
 
 ## Settings and Grouped Content
 
@@ -116,15 +115,16 @@ Evidence: `SettingsPage.kt` and the files under `example/shared/src/commonMain/k
 - Use `summary` for consequences or context, not to repeat the title.
 - Show a small dependent setting conditionally with `AnimatedVisibility` when appropriate. For long dynamic groups, use row-level lazy items and the [performance workflow](performance-and-animation.md), while keeping state at the screen owner.
 - Hide a dependent setting when it is irrelevant or unsupported; leave it visible but disabled when discoverability matters and the summary can explain the prerequisite. See [Preference enabled and dependent states](preferences-and-menus.md#enabled-and-dependent-states).
-- Treat the Example's repeated 12 dp group margins as a reference value, not a global Miuix constant. Preserve the target project's established spacing unless the user asks to change it, and use [Design language and Defaults](design-language.md) for semantic styling decisions.
+- Use the target project's layout tokens for group margins; see [Design language and Defaults](design-language.md) for semantic styling decisions.
 
 For large/dynamic groups, prefer the conditional [segmented-card approach](performance-and-animation.md#lazy-boundaries-and-grouped-cards); it is not needed for this small group.
 
-Reference shape, adapted from `SettingsPage.kt`:
+Illustrative composition under an existing MiuixTheme; the caller supplies its group spacing as `PaddingValues`:
 
 ```kotlin
 @Composable
 fun SettingsScreen(
+    groupPadding: PaddingValues,
     enabled: Boolean,
     onEnabledChange: (Boolean) -> Unit,
 ) {
@@ -135,9 +135,7 @@ fun SettingsScreen(
             item {
                 SmallTitle(text = "General")
                 Card(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
-                        .padding(bottom = 12.dp),
+                    modifier = Modifier.padding(groupPadding),
                 ) {
                     SwitchPreference(
                         title = "Feature",
@@ -171,13 +169,13 @@ Evidence: `component/DialogSection.kt`, `component/BottomSheetSection.kt`, and t
 - Use Overlay components for page-scoped UI and place them under the intended `Scaffold` popup host.
 - Use Window components when the popup must be independent of that page's Scaffold.
 - Model visibility explicitly with `show` and close it through `onDismissRequest`.
-- Always make `onDismissRequest` set the controlled `show`/active-overlay state to false or null. System back and outside-click dismissal request this callback; the callback does not own the Boolean for you.
+- For a dismissible popup, `onDismissRequest` must update the controlled show/active-overlay state. If a product rule conditionally prevents dismissal, implement and test that rule explicitly; the callback does not update the Boolean for you.
 - Use `onDismissFinished` only when cleanup must wait for the exit animation, such as resetting a pressed/hold-down state or discarding a draft after the popup is no longer visible. It is not called when a hide animation is cancelled by showing the component again.
 - Keep dialog actions balanced and make the primary action visually primary with the provided button defaults when the evidence supports it.
 
 For multiple popup entry points, prefer one page-scoped state such as `ActiveOverlay?` and render each popup from an equality check. The current Overlay host assigns internal z-indices, but that ordering is not a public workflow contract; do not depend on arbitrary simultaneous `show = true` values. An intentional parent → child popup flow should dismiss child first and must be tested for back, focus, scrim, and accessibility behavior.
 
-Keep the pattern small: one enum chooses the active popup, while `onDismissFinished` handles only cleanup that must wait for animation completion.
+For mutually exclusive popups, an enum is one compact state representation; reuse the target architecture when it already models this flow. `onDismissFinished` handles only cleanup that must wait for animation completion.
 
 ```kotlin
 private enum class ActiveOverlay { EditName, DeleteConfirm }
@@ -192,7 +190,7 @@ OverlayDialog(
 ) { /* edit nameDraft; commit only from the confirm action */ }
 ```
 
-Place this flow below one intended `Scaffold`. Render the second dialog from `activeOverlay == ActiveOverlay.DeleteConfirm` and give it the same dismissal contract. If one popup must open another, close the current one first and activate the next only after its dismissal finishes; add queued state only for that real product flow.
+Place this flow below one intended `Scaffold`. Render the second dialog from `activeOverlay == ActiveOverlay.DeleteConfirm` and give it the same dismissal contract. When one popup replaces another without overlap, sequence the replacement through dismissal completion. Deliberately stacked parent/child surfaces instead need an explicit back/focus policy; test that flow rather than forcing every interaction into a replacement sequence.
 
 ### Form popup lifecycle
 

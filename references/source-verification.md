@@ -8,7 +8,7 @@ Contents: [evidence workflow](#evidence-resolution-workflow) · [snapshot scope]
 
 1. Start from the component catalog, [usage-pattern evidence levels](usage-patterns.md#evidence-levels), or the exact file named by another reference.
 2. Expand abbreviated paths with the table below.
-3. Read the relevant `docs/**/*.md` file from the pinned snapshot for intent, the matching `docs/demo/` file for an isolated call, the closest `example/shared/` section for integration, and source for the API/behavior contract. Do not read every document or source file unless the task is a release audit.
+3. Read the relevant `docs/**/*.md` file for intent, a matching `docs/demo/` file when an isolated call is unclear, and source for uncertain API/behavior contracts. Use the closest `example/shared/` section only if a concrete integration question remains. Stop when the task has the evidence it needs.
 4. For current catalog work, keep all evidence on commit `39c40f99` / tag `v0.9.4`. The stable tag was verified on 2026-11-08. Do not use the rolling rendered documentation site or generated Dokka pages for version-sensitive parameters. If the target project uses another version, state that mismatch and verify that version separately.
 5. Return to the [Code Delivery Contract](../SKILL.md#code-delivery-contract) before presenting implementation or validation claims.
 
@@ -103,10 +103,18 @@ These files underpin multiple components. They're read-on-demand, not listed per
 | `example/shared/.../component/` | `LazyListScope` sections and popup examples composed into `MainPage`; these are sections, not one screen per component |
 | `example/shared/.../utils/PageUtils.kt` | Example-specific adaptive app bar, insets, scroll, haptic, and blur helpers |
 
-Read [Example-derived usage patterns](usage-patterns.md) before translating these files into application code. Reuse repeated hierarchy and state patterns, but verify APIs in source and do not treat Example-specific helpers as public Miuix requirements.
+Read [UI composition patterns](usage-patterns.md) before translating these files into application code. Reuse repeated hierarchy and state patterns, but verify APIs in source and do not treat Example-specific helpers as public Miuix requirements.
 
 ## Application practice evidence
 
-[Mishka patterns](mishka-patterns.md) pins the user-supplied UI guide and maps application helpers to their actual owners. Do not resolve Mishka `app/...` paths against Miuix. Official Example and Mishka guide different application choices; the target project decides spacing, breakpoints and helper architecture.
+Application examples can reveal useful composition tradeoffs, but they do not define Miuix APIs, mandatory wrappers, dimensions, breakpoints or business behavior. For public contracts, use the selected library version's docs/source; for product choices, use the user's goals and the target project's conventions. Consult an application example only when it resolves a concrete integration question.
 
-For button/option feedback, [KernelSU interaction examples](styling-icons-and-effects.md#kernelsu-evidence-and-limits) pins the inspected Miuix UI implementation and separates its application choices from the library contract.
+Supplementary sources consulted while developing this skill:
+
+| Source | Evidence contribution |
+|---|---|
+| [Mishka UI guide](https://github.com/YuKongA/Mishka/blob/91e17c02d6eadbca6752ed30014660e378dc9c33/docs/ui-guidelines.md) | Insets ownership, adaptive layout, lazy grouping and animation-state observations |
+| [KernelSU Miuix UI](https://github.com/tiann/KernelSU/tree/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/app/src/main/java/me/weishu/kernelsu/ui) | Native component feedback, controlled held-state and nested interaction examples |
+| [Original skill](https://github.com/limczhh/miuix-skill) | Component catalog and version-pinned reference organization inherited from the original local installation |
+
+The application insights are expressed as conditional, reusable guidance in the topic references. No application helper implementation is bundled. Preserve upstream attribution and check the relevant license if copying source code; the source citations here do not change upstream licensing.

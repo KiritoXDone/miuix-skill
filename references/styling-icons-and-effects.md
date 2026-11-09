@@ -43,7 +43,7 @@ Do not use the unversioned rendered docs site or generated online Dokka to infer
 |---|---|---|
 | 按压 pressed | 手势按下，到 release/cancel 结束 | 由组件交互与 indication 驱动；不在 onClick 中保存一个永久 pressed 标记 |
 | 选中 selected / checked | 应用选项值，提交后持续存在 | 传给 Radio/Checkbox/Switch/Dropdown 等组件的受控状态；不是 `holdDownState` |
-| 入口保持 held | 该入口的菜单或弹窗仍处于打开/退出过程 | 仅为需要保持反馈的 trigger 使用 `holdDownState`；按选定关闭生命周期释放 |
+| 受控保持 held | 交互需要持续按压视觉，例如菜单打开/退出期间的入口 | 用受控 `holdDownState` 表达并按交互生命周期释放，不代替业务选择值 |
 
 ### Default feedback first
 
@@ -76,26 +76,17 @@ modifier 的先后会改变布局、绘制与点击范围，参见 [Compose modi
 
 复现时分别按中心、四角、边缘与相邻留白，并检查拖动转滚动、松手取消及缩放后的反馈。观察正常/按下/释放帧的高亮轮廓，同时记录实际命中的动作与次数。嵌套区域还要分别测试父表面、独立子表面及二者之间的留白，验证各自支持的点击/长按、反馈边界和取消行为；看到矩形漏角可认定视觉裁剪不符合目标，但缺少运行证据时不能断言是哪层 modifier 导致。
 
-### Hold only the popup trigger
+### Held feedback lifecycle
 
-KernelSU 的简单入口把 `ArrowPreference` / `IconButton` 的 `holdDownState` 直接绑定到自身弹窗 `show`，在关闭请求中置 false。普通导航行、已选选项、确认/取消按钮不因此保持按下。
+仅在产品确需持续按压视觉时控制 `holdDownState`。例如菜单/弹窗入口可以与自身 show 绑定，在关闭请求中释放；如果需要保持到退出动画完成，则使用独立 held 状态并在完成回调中释放。业务选中或普通动作执行不自动意味着需要 held 反馈。
 
 原生 `OverlayDropdownPreference` 已经管理展开与 held 生命周期：打开时保持，退出完成后释放。优先使用它，不在外部另维护一个 pressed 标记。自定义弹窗若也需要保持到退出结束，才分离 show 与 held，并在 `onDismissFinished` 清理；快速重开导致退出取消时仍以当前打开状态为准。不要用延时任务猜测动画结束，也不要导入内部 `HoldDownObserver`。
 
 单选/多选的持久视觉交给组件 selected/checked 颜色及指示标记；释放手指后只消除瞬时 press 层，不能清空真实选中项。鼠标 hover 或键盘 focus 仍可产生高亮，不应一概当成“卡住”而清除焦点。
 
-### KernelSU evidence and limits
+### API evidence
 
-核对的是 `tiann/KernelSU` 的 **Miuix 分支界面**，固定提交 `730f644615969cfd4a84b45d7f62a667b7b95a50`（核对日期 2026-11-09）；其 [版本目录](https://github.com/tiann/KernelSU/blob/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/gradle/libs.versions.toml) 使用 Miuix 0.9.4。
-
-| 已观察到的做法 | 源码 |
-|---|---|
-| 设置页直接使用 SwitchPreference / OverlayDropdownPreference 的状态与回调 | [SettingsMiuix.kt](https://github.com/tiann/KernelSU/blob/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/app/src/main/java/me/weishu/kernelsu/ui/screen/settings/SettingsMiuix.kt) |
-| 编辑入口以 showDialog 驱动 holdDownState；确认 TextButton 使用 primary Defaults | [SuperEditArrow.kt](https://github.com/tiann/KernelSU/blob/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/app/src/main/java/me/weishu/kernelsu/ui/component/miuix/SuperEditArrow.kt) |
-| 重启菜单图标以 showTopPopup 驱动 holdDownState；动作项执行时关闭菜单 | [RebootListPopupMiuix.kt](https://github.com/tiann/KernelSU/blob/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/app/src/main/java/me/weishu/kernelsu/ui/component/rebootlistpopup/RebootListPopupMiuix.kt) |
-| 首页部分可交互卡片显式使用 Tilt 与 showIndication | [HomeMiuix.kt](https://github.com/tiann/KernelSU/blob/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/app/src/main/java/me/weishu/kernelsu/ui/screen/home/HomeMiuix.kt) |
-
-这些是应用模式，组件契约仍查固定版本的 `MiuixTheme.kt`、`Button.kt`、`IconButton.kt`、`Component.kt`、`Card.kt`、`utils/MiuixIndication.kt` 与 `preference/OverlayDropdownPreference.kt`，路径见 [source-verification](source-verification.md)。KernelSU 同时包含 Material UI；不能把 Material 目录或 `SingleSelectDialog.kt` 的 Material3 实现当成 Miuix 模板。其 [InstallMiuix.kt](https://github.com/tiann/KernelSU/blob/730f644615969cfd4a84b45d7f62a667b7b95a50/manager/app/src/main/java/me/weishu/kernelsu/ui/screen/install/InstallMiuix.kt) 也有外层 toggleable 包 CheckboxPreference 的特例：移植时须核查嵌套交互，不把整个项目的每一种写法都升级为通用规则。未运行这些页面，不从源码推断实际帧感或断言特例存在可复现故障。
+按目标版本核对 `MiuixTheme.kt`、`Button.kt`、`IconButton.kt`、`Component.kt`、`Card.kt`、`utils/MiuixIndication.kt` 与 `preference/OverlayDropdownPreference.kt`。路径和补充实践来源统一见 [source-verification](source-verification.md)。混合设计系统的项目先确认组件实际 import 与主题，再判断反馈契约。
 
 ### Interaction checks
 
@@ -134,4 +125,4 @@ At v0.9.4, `Card`'s internal `BasicCard` uses `squircleSurface` and propagates m
 
 ### Blur ownership and fallback
 
-Mishka's `BlurredBar` and `rememberBlurBackdrop` coordinate a content capture with transparent bars. They are application helpers. Reuse an existing target-project implementation or build the minimal supported composition from the official blur guide. Each intended page capture must be scoped to its host; do not capture unrelated pages accidentally. Use transparent bar colors only while the effect is active; unsupported/disabled blur needs a readable opaque theme surface. Do not add blur to every page solely because the reference app does.
+Coordinate the content capture, effect surface and bar colors under the intended page host. Reuse an existing application wrapper or compose the supported public APIs from the official blur guide. Each intended page capture must be scoped to its host; do not capture unrelated pages accidentally. Use transparent bar colors only while the effect is active; unsupported/disabled blur needs a readable opaque theme surface. Enable blur only where the visual hierarchy and supported platforms benefit from it.

@@ -48,7 +48,7 @@ Assign each observed problem to one or more categories before editing:
 | Spacing and shape | Uneven rhythm, clipping, arbitrary radii | Component Defaults, existing project spacing, Example composition |
 | Color and typography | Poor contrast, literal colors, inconsistent scale | [Design language and Defaults](design-language.md), theme source, component defaults |
 | Feedback bounds | Rectangular highlight, protruding corners, whole-row flash around a small button | [Clipping and interaction bounds](styling-icons-and-effects.md#feedback-bounds-and-corner-clipping); locate the indication node and its enclosing shape before changing colors |
-| Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and KernelSU examples](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication, component-owned interactions and per-surface feedback/clip ownership, including independent nested targets |
+| Press/selection feedback | Abrupt scaling, stacked highlights, persistent pressed visuals | [Interaction state and feedback](styling-icons-and-effects.md#pressed-selected-and-held-state), nearest LocalIndication, component-owned interactions and per-surface feedback/clip ownership, including independent nested targets |
 | State and interaction | Wrong state owner, disabled row still clickable, broken dismissal | Demo, integrated Example, and source contract |
 | Cross-page scale | Home looks correct but detail screens are enlarged | [Density ownership](setup-and-theme.md#density-ownership-across-navigation); compare runtime density/fontScale, providers and matching component defaults |
 | Insets and adaptation | Content under bars, IME overlap, broken wide layout | Scaffold contract, page shell, target platform behavior |
@@ -64,12 +64,12 @@ For every change, load the smallest evidence set that answers it:
 1. Use the [basic component catalog](component-selection.md), [Overlay/Window catalog](overlays-and-windows.md), or [Preference family guide](preferences-and-menus.md#choose-the-family) to identify the intended public Miuix component.
 2. Read its doc for purpose and supported behavior.
 3. Read the matching `docs/demo/` file for a minimal call shape.
-4. Read the closest `example/shared/` page or section through [Example-derived usage patterns](usage-patterns.md) for grouping, state flow, and integration.
-5. Resolve exact paths through [Source verification](source-verification.md), then read the pinned pinned source and Defaults for uncertain parameters, colors, dimensions, host behavior, or edge cases.
+4. Use [UI composition patterns](usage-patterns.md) for grouping and state flow; inspect the nearest official example only if a concrete integration question remains.
+5. Resolve exact paths through [Source verification](source-verification.md), then read the pinned source and Defaults for uncertain parameters, colors, dimensions, host behavior, or edge cases.
 
-For inset/adaptive issues, read [page layout and insets](page-layout-and-insets.md); for long lists or animation, read [performance and animation](performance-and-animation.md). [Mishka patterns](mishka-patterns.md) distinguishes transferable lessons from its application helpers.
+For inset/adaptive issues, read [page layout and insets](page-layout-and-insets.md); for long lists or animation, read [performance and animation](performance-and-animation.md). Use [source verification](source-verification.md) to distinguish public contracts from optional composition patterns.
 
-Record which finding is a source contract, an Example/Mishka pattern, an existing project convention, or a user-directed visual choice. Do not present one category as another.
+Record which finding is a source contract, an optional application pattern, an existing project convention, or a user-directed visual choice. Do not present one category as another.
 
 ## Choose and Implement the Fix
 

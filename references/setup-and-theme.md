@@ -129,7 +129,7 @@ Version 0.9.4 repository does not provide a first-party `@Preview` sample, so tr
 
 ## Continue With
 
-- For application root, page shell, Scaffold padding, and state patterns, read [Example-derived usage patterns](usage-patterns.md).
+- For application root, page shell, Scaffold padding, and state patterns, read [UI composition patterns](usage-patterns.md).
 - For semantic colors, typography, grouping, and component Defaults, read [Design language and Defaults](design-language.md).
 - For exact `MiuixTheme`, `ThemeController`, and Scaffold source paths, use [Source verification](source-verification.md).
 - Before returning code, satisfy the [Code Delivery Contract](../SKILL.md#code-delivery-contract).

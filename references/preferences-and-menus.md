@@ -10,9 +10,9 @@
 | Rich options with icons/summaries, or spinner dialog mode | `OverlaySpinnerPreference` or `WindowSpinnerPreference` | Uses richer `DropdownItem` content and spinner-specific presentation |
 | Standalone anchored action menu rather than a settings row | `*DropdownMenu` family | The caller owns the anchor and menu action semantics |
 
-Choose Overlay versus Window lifetime with [Overlay and Window Components](overlays-and-windows.md#choose-the-host-first). For settings-page grouping and state ownership, continue with [Example-derived usage patterns](usage-patterns.md#settings-and-grouped-content). Verify the chosen row's exact call shape in its doc/demo/source through [Source verification](source-verification.md).
+Choose Overlay versus Window lifetime with [Overlay and Window Components](overlays-and-windows.md#choose-the-host-first). For settings-page grouping and state ownership, continue with [UI composition patterns](usage-patterns.md#settings-and-grouped-content). Verify the chosen row's exact call shape in its doc/demo/source through [Source verification](source-verification.md).
 
-按钮/选项的反馈遵循 [pressed、selected 与 held 的区别](styling-icons-and-effects.md#pressed-selected-and-held-state)。选中值传给 `selected` / `checked` / `selectedIndex`；`holdDownState` 仅用于需要保持反馈的弹窗入口。原生 Preference 已负责同一动作的点击与状态反馈，不在外面再包一层 toggleable/clickable。
+按钮/选项的反馈遵循 [pressed、selected 与 held 的区别](styling-icons-and-effects.md#pressed-selected-and-held-state)。选中值传给 `selected` / `checked` / `selectedIndex`；`holdDownState` 用于交互明确要求的持续按压视觉，例如弹窗入口，不表达业务选中值。原生 Preference 已负责同一动作的点击与状态反馈，不在外面再包一层 toggleable/clickable。
 
 选项行的高亮可以覆盖整行，但应在所属 Card 或 lazy 分段的外轮廓内；独立小按钮的高亮应止于按钮表面。矩形漏角或范围过大时，按 [反馈边界检查](styling-icons-and-effects.md#feedback-bounds-and-corner-clipping) 定位 indication 与裁剪层。
 

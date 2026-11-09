@@ -97,6 +97,8 @@ When the user names a standard component, map the visual request to the public c
 
 The `Switch` mapping has a dynamic-color exception: its unchecked thumb uses `LocalColors.current.onSurface.copy(0.38f)` and its disabled checked thumb uses `LocalColors.current.surface` when dynamic colors are active. Preserve those component-specific defaults instead of reducing every state to one `primary`/`secondary` pair.
 
+For the explicitly requested classic green/amber/red overview-card look, use the [status-card palette recipe](design-language.md#status-overview-cards). Those application-owned colors do not replace Miuix component defaults globally.
+
 For a component with a dedicated color parameter, verify the exact parameter name. For example, v0.9.4 exposes `InputField.color`; it does not add `SearchBar.color` to the `SearchBar` wrapper.
 
 ## Core color roles

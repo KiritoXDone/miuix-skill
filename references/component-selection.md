@@ -24,6 +24,7 @@ When the user describes a *scenario* rather than a component name, use this tabl
 | "路径导航 / 文件路径 / 目录层级" | `BreadcrumbBar` + `BreadcrumbItem`; use `highlightIndex` for the active segment and `joinToPath()` for path reconstruction |
 | "标签页 / tabs" | `TabRow` |
 | "提示气泡 / tooltip" | `TooltipBox` + `PlainTooltip` / `RichTooltip` |
+| "状态总览 / 健康卡 / KSU 绿色大对号 / 黄红状态卡" | `Card` + `Icon` + `Text`，采用可选的 [状态卡视觉模式](design-language.md#status-overview-cards)；不是库内置 StatusCard |
 | "角标 / 徽章 / badge" | `Badge` + `BadgedBox`; for navigation, use `NavigationBarItem(badge = { ... })` or `FloatingNavigationBarItem(badge = { ... })` |
 | "独立单选弹窗 / single-choice dialog" | `WindowDropdownDialog`; see [selection dialog](preferences-and-menus.md#standalone-single-choice-dialog) |
 | "滑块 / slider" | `Slider` (basic) or `SliderPreference` (in settings) |

@@ -34,6 +34,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 | 基础控件与导航栏选型 | [component-selection](references/component-selection.md) |
 | 设置行、单选对话框、Dropdown/Spinner | [preferences-and-menus](references/preferences-and-menus.md) |
 | Overlay/Window、长对话框、BottomSheet | [overlays-and-windows](references/overlays-and-windows.md) |
+| 状态概览、大对号卡片、绿/黄/红状态变体 | [状态卡视觉模式](references/design-language.md#status-overview-cards) |
 | 自然语言配色、主题语义色、状态色 | [color-lookup](references/color-lookup.md) + [design-language](references/design-language.md) |
 | 按压/选中反馈、高亮越界/四角突出、图标、squircle、blur、自定义绘制 | [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 路由、返回栈、转场、预测返回 | [miuix-nav](references/miuix-nav.md) |

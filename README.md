@@ -7,6 +7,7 @@
 ## 能力范围
 
 - 精简入口与触发描述，按任务加载组件、布局、状态和性能参考。
+- 提供逐组件用法与回调/状态契约，结合 awesome-miuix 项目核验组合思路，并标明旧版、快照和本地分支边界。
 - 明确 Scaffold、底栏、IME、横屏缺口和 BottomSheet 的安全区归属。
 - 补充分段卡片、lazy key、展开/收起、布局 morph、帧级状态读取与不可见动画暂停。
 - 补全长对话框、原生单选弹窗、squircle 渲染选择与 blur 降级。
@@ -54,6 +55,7 @@ Claude Code 可安装到 `~/.claude/skills/miuix`。其他支持该格式的工�
 | 列表、状态、动画、性能 | [performance-and-animation](references/performance-and-animation.md) |
 | 页面组合 / 现有 UI 审查 | [usage-patterns](references/usage-patterns.md) / [ui-review-workflow](references/ui-review-workflow.md) |
 | 设计语言 / 颜色角色 | [design-language](references/design-language.md) / [color-lookup](references/color-lookup.md) |
+| 逐组件使用说明 | [component-usage](references/component-usage.md) |
 | 基础组件 / 设置与菜单 | [component-selection](references/component-selection.md) / [preferences-and-menus](references/preferences-and-menus.md) |
 | 弹窗 / 图标与效果 | [overlays-and-windows](references/overlays-and-windows.md) / [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 主题依赖 / 导航 | [setup-and-theme](references/setup-and-theme.md) / [miuix-nav](references/miuix-nav.md) |
@@ -63,4 +65,4 @@ Claude Code 可安装到 `~/.claude/skills/miuix`。其他支持该格式的工�
 
 本仓库沿用并改进原有技能的组件与源码参考。官方证据、原始技能归属与补充实践来源集中记录在 [源码核验指南](references/source-verification.md#application-practice-evidence)。
 
-指导内容更新：2026-11-09；当前版本基线的核对日期见源码核验指南。API 证据采用固定 tag/commit，官方滚动文档用于发现与概念说明。维护时先核对版本差异，再调整相关参考；不要只批量替换版本号。贡献涉及 API 或性能结论时，请附准确来源和相应验证。
+指导内容更新：2026-11-10；当前版本基线的核对日期见源码核验指南。API 证据采用固定 tag/commit，官方滚动文档用于发现与概念说明。维护时先核对版本差异，再调整相关参考；不要只批量替换版本号。贡献涉及 API 或性能结论时，请附准确来源和相应验证。

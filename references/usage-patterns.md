@@ -2,6 +2,8 @@
 
 Use this reference to compose Miuix components into application roots, navigation shells, grouped content and popup flows. Select patterns by product needs and target architecture. Resolve theme/host ownership with [Project setup and theme](setup-and-theme.md); use the [Code Delivery Contract](../SKILL.md#code-delivery-contract) for the requested implementation scope.
 
+单组件状态/回调见 [组件用法](component-usage.md)，组合思路的社区证据见 [实践核验](source-verification.md#community-usage-evidence)。下列模式继续按目标项目选择，不引入应用特定约定。
+
 ## Contents
 
 - [Evidence Levels](#evidence-levels)

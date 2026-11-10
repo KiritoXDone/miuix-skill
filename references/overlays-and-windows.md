@@ -69,3 +69,26 @@ Verified in `miuix-ui/.../layout/BottomSheetContentLayout.kt` and `window/Window
 - Loading-to-content and item-count changes can change wrap-content height abruptly. An application wrapper may animate measured content size with a verified Miuix `folmeSpring` spec; avoid competing with enter/exit/IME animation or clipping fixed actions. Implement any additional inset/size wrapper within the application, using the actual host contract.
 
 Check open/close, focused field, IME dismissal, freeform/caption bars and resizes on the target platform before claiming this behavior verified.
+
+## Usage by overlay family
+
+以下选型补充上方源码目录。社区组合证据见 [表单与选择](source-verification.md#community-form-and-selection)、[进度与弹层](source-verification.md#community-progress-and-overlays)；未观察到的社区变体直接依据官方 doc/demo，不以名称相似推断调用形状。
+
+| 组件 | 适合的流程 | 调用方负责 |
+|---|---|---|
+| `OverlayDialog` | 当前页面的确认、输入草稿或颜色编辑 | 页面宿主、show/dismiss、草稿初始化及确认提交；普通输入错误留在弹窗内，不关闭后丢草稿 |
+| `WindowDialog` | 独立于页面 Scaffold 的确认/全局流程 | 当前主题/密度与实际窗口行为；单独验证焦点、IME、back。独立 window 不是跨页面共享业务状态的自动实现 |
+| `OverlayBottomSheet` | 页面内较长的表单、列表或上下文详情 | 内容滚动、操作区、安全区与返回；列表/输入超高时保持底部操作可达 |
+| `WindowBottomSheet` | 独立窗口承载的详情或多阶段任务 | 将准备/确认/执行/结果建模为明确状态，Sheet 作为稳定宿主；任务退出与关闭 UI 的后果分别定义 |
+| `OverlayListPopup` | 页面内锚定到输入/按钮的建议或菜单 | anchor、show、定位、可用空间、选择和关闭；输入建议不必加遮罩，宽高应由窗口和内容约束而非固定设备值 |
+| `WindowListPopup` | 需要独立窗口定位的短列表 | 与 Overlay 相同的数据/选择责任，另核对屏幕坐标、窗口 inset、桌面缩放与焦点 |
+| `OverlayCascadingListPopup` | 页面内有真实父子层级的菜单 | 稳定项顺序和层级、叶项动作、逐层返回；若原生 cascading menu 已满足，不再自写 popup 栈 |
+| `WindowCascadingListPopup` | 独立窗口中的级联菜单 | 在上项基础上验证窗口边缘翻转/空间不足和子层焦点，不依赖内部 z-index 作为应用流程协议 |
+
+### Form, picker, and background-task lifetimes
+
+- 编辑弹窗：打开时创建当前对象的草稿，输入过程中只更新草稿；确认校验通过才提交。取消/返回不写回。复用同一 show 状态编辑不同对象时，初始化键包含对象身份，不能沿用上一份草稿。
+- 颜色选择器：picker、HEX 和预览共用草稿，非法/未完成文本不覆盖最后合法颜色；同 [ColorPicker 用法](component-usage.md#color-and-appearance-controls)。
+- 任务 Sheet/Dialog：关掉 UI、取消任务、留后台运行是不同事件。根据实际阶段禁用重复操作并保留可用的退出路径，回到页面时从任务所有者恢复状态。不要把网络/安装协程绑在某个临时内容分支的 composition 生命周期上。
+- 替换内容时让外层宿主和 show 稳定；内部在需要时做尺寸过渡。只在真正结束时清理，onDismissFinished 不作为业务完成信号。
+- 动态主题、无障碍字号和 IME 是这些交互的共同条件，不照搬示例应用的固定高度、字数或补充说明文案。

@@ -79,3 +79,53 @@ There is no dedicated `docs/demo/` file, but the tagged component doc contains c
 Use it for immediate selection with `DropdownDefaults.dialogDropdownColors()` rather than recreating a list of buttons plus confirm. The entry items carry `DropdownItem.onClick`; `onSelect` is often an application-wrapper callback, **not** a parameter to invent on this API. Selection state stays with the caller. This function uses `onDismiss`, not `onDismissRequest`; the callback must update the caller's `show` state when selection, cancellation or back requests dismissal. Verify the required title, cancellation text, `onDismissFinished` and color arguments before emitting code.
 
 If an application wrapper caches entries, include option data and selected state among its real keys. Use `rememberUpdatedState` for a callback that must remain fresh without invalidating the whole entry cache. Do not freeze selection to stabilize callbacks, and do not add duplicate dismissal when the chosen component already invokes the same controlled callback.
+
+## Usage contracts
+
+社区组合见 [表单与选择实践](source-verification.md#community-form-and-selection)；以下按 v0.9.4 公共 API 组织，不沿用项目自定义 Preference 名称。summary 和次级标签默认省略。
+
+| 组件族 | 状态和动作 | 实际组合方式 |
+|---|---|---|
+| `ArrowPreference` | title + onClick；没有隐含业务选择值 | 打开下一页、编辑弹窗或详情；用 startAction 放图标。导航箭头只是 affordance，不代替导航事件；弹窗需要时才绑定 held |
+| `SwitchPreference` | checked + onCheckedChange | 设置行直接绑定上提的 Boolean；无需另加可点击 Row 或独立持久化的 Switch。禁用依赖传给整行与自定义动作 |
+| `CheckboxPreference` | checked + onCheckedChange | 多选或待确认选项；单次提交的表单维护本地草稿集合，确认后交给业务层；筛选后仍按稳定 ID 保存选择 |
+| `RadioButtonPreference` | selected + onClick | 互斥项由同一 selected key 派生；选中标题/summary 的颜色由 colors 工厂控制，内部 radio 已是展示端，勿再加第二个 onClick |
+| `SliderPreference` | value + onValueChange，valueRange/steps，必要时 valueText/onValueChangeFinished | 单值设置直接用完整行，拖动草稿与持久化时机分离；valueText 只显示必要值/单位，不附功能说明 |
+| `RangeSliderPreference` | 一份 ClosedFloatingPointRange 的 value + onValueChange | 上下限作为一个设置；显示与提交同时包含两端，不能两边各自写回造成瞬间非法范围 |
+| `OverlayDropdownPreference` / `WindowDropdownPreference` | 简单 List<String> + selectedIndex + onSelectedIndexChange；也有 entry 模型重载 | 少量互斥文本选项；从业务值映射 index，再把回调映回业务值。列表改变/为空时明确处理选择与 enabled，不盲用 index 0 |
+| `OverlaySpinnerPreference` / `WindowSpinnerPreference` | 带图标/必要辅助内容的 DropdownItem 列表，或 entries；索引重载同上 | 需要富选项时采用，showValue 控制是否在入口重复显示值。spinner 的配色参数名为 spinnerColors；不要沿用 DropdownPreference 的 dropdownColors 名称 |
+| `OverlayDropdownMenu` / `WindowDropdownMenu` | DropdownEntry/entries 中每项持有动作及可选 selected | 完整行作为菜单入口；动作菜单与业务单选区分，重命名/删除等动作不需要持久 selected |
+| `OverlayIconDropdownMenu` / `WindowIconDropdownMenu` | 同样的菜单数据，图标是入口；onExpandedChange 处理展开相关副作用 | 放顶栏/工具栏；如需打开时清焦点，用公开展开回调，不用额外 clickable 拦截。入口 held/关闭优先由原生组件管理 |
+| `OverlayIconCascadingDropdownMenu` / `WindowIconCascadingDropdownMenu` | entry/item 组织子菜单；选择属于具体叶项 | 有真实层级的命令才用；展开期间避免随刷新重排父子项，验证返回、焦点、鼠标和预测返回 |
+
+### Identity, selection, and events
+
+- 业务层保存稳定 ID/enum，UI 层根据当前 options 求 selectedIndex；示例项目中为显示兜底的索引值不代表新项目应自动选中首项。
+- DropdownEntry 是库模型；项目里同名的 DropdownItem composable、DropDownOption、Choice 等可能只是 wrapper，先查 import。`DropdownItem` 的过时构造参数也需以目标源码为准。
+- 在索引重载和 DropdownItem.onClick 同时配置业务动作前检查实现；Spinner 索引重载可顺序调用两个回调，同一提交不要各写一遍。
+- 缓存 options/entries 包含真实选项和选中数据；回调需要最新引用时使用 rememberUpdatedState。任何缓存都不能冻结 selected 状态。
+- 想在打开菜单时清焦点，使用所选组件公开的 onExpandedChange 等回调；不提供该能力时选择更合适的公开入口或小型应用封装，而不是把同动作点击层叠在原生行外面。
+
+### Minimal selected-value row
+
+局部示例需要已有 MiuixTheme 与合适的 Scaffold（Overlay host）。selectedIndex 来自调用方，options 更新时由调用方同步选择；超出范围先显示为禁用，避免隐式改写业务值。
+
+```kotlin
+import androidx.compose.runtime.Composable
+import top.yukonga.miuix.kmp.preference.OverlayDropdownPreference
+
+@Composable
+fun ModeRow(
+    options: List<String>,
+    selectedIndex: Int,
+    onSelectedIndexChange: (Int) -> Unit,
+) {
+    OverlayDropdownPreference(
+        title = "模式",
+        items = options,
+        selectedIndex = selectedIndex,
+        enabled = options.isNotEmpty() && selectedIndex in options.indices,
+        onSelectedIndexChange = onSelectedIndexChange,
+    )
+}
+```

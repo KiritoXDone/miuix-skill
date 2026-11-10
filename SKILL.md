@@ -33,6 +33,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 | Scaffold、滚动、搜索、宽屏、刘海、键盘、安全区 | [page-layout-and-insets](references/page-layout-and-insets.md) |
 | 长列表、分段卡片、展开收起、帧级动画、Flow 与稳定性 | [performance-and-animation](references/performance-and-animation.md) |
 | 基础控件与导航栏选型 | [component-selection](references/component-selection.md) |
+| 各组件具体用法、受控状态、回调与组合示例 | [component-usage](references/component-usage.md)，只读对应组件节 |
 | 设置行、单选对话框、Dropdown/Spinner | [preferences-and-menus](references/preferences-and-menus.md) |
 | Overlay/Window、长对话框、BottomSheet | [overlays-and-windows](references/overlays-and-windows.md) |
 | 状态概览、大对号卡片、绿/黄/红状态变体 | [状态卡视觉模式](references/design-language.md#status-overview-cards) |
@@ -44,6 +45,7 @@ description: "构建、优化和审查 Miuix / HyperOS 风格的 Compose Multipl
 ## 从证据到实现
 
 - 从[官方文档](https://compose-miuix-ui.github.io/miuix/)理解概念和组件选择；版本敏感的参数用目标 tag 下的 Markdown 文档、`docs/demo` 和 Kotlin 源码核对。组合页面时再读最接近的 `example/shared` 页面，避免遍历所有示例。
+- [组件用法](references/component-usage.md)给出基础组件的使用契约；社区组合来源见 [实践核验](references/source-verification.md#community-usage-evidence)，不将旧版/快照/本地分支的参数直接复制到目标版本。
 - 单组件调用只需确认签名、import/module、祖先与回调；页面改造再确认结构、状态、insets 和必要的视觉证据。证据足够后开始实施。
 - 优先公共 Miuix 组件 → `*Defaults` / 主题 token → Compose Foundation/Layout/Animation。确无对应组件时做应用自有封装，标明归属；仅在项目或用户有意混用时引入其他 UI 库。
 - `miuix-ui` 提供核心组件；设置行用 `miuix-preference`；扩展图标、模糊和路由分别按需添加 `miuix-icons`、`miuix-blur`、`miuix-nav`。避免无需求地加依赖。

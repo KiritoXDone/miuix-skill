@@ -113,6 +113,10 @@ Use `NavigationBar` or `NavigationRail` for persistent destination chrome, and u
 
 The current runtime is deliberately a single flat stack. It does not provide dialog/bottom-sheet scene strategies, shared-element transitions, KSP route registration, or a built-in `navigateForResult`/`setResult` channel. Layer those behaviors in application code only after confirming the target version.
 
+## Community integration boundaries
+
+[HyperLyric](community-projects.md#hyperlyric) 与 [GhostLock](community-projects.md#ghostlock) 提供路由/页面状态接线的参考；导航外观、编辑草稿与后台任务仍分别有所有者。内存栈不承诺进程恢复，页面 show Boolean 也不自动构成可保存导航模型。带旧 navigation3 或应用自定义手势层的项目只作为组合线索，不推断与当前 miuix-nav API 兼容。
+
 ## Evidence paths
 
 - Guide: `docs/guide/miuix-nav.md`

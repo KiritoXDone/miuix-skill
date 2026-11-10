@@ -80,6 +80,8 @@ Use it for immediate selection with `DropdownDefaults.dialogDropdownColors()` ra
 
 If an application wrapper caches entries, include option data and selected state among its real keys. Use `rememberUpdatedState` for a callback that must remain fresh without invalidating the whole entry cache. Do not freeze selection to stabilize callbacks, and do not add duplicate dismissal when the chosen component already invokes the same controlled callback.
 
+复合设置的提交/重置、依赖关系、输入与预览见 [设置编辑器](settings-and-editors.md)；树形三态和排序勾选见 [集合流程](collections-and-workflows.md)。这些模式按项目需求选择，不把应用 wrapper 当作公共组件。
+
 ## Usage contracts
 
 社区组合见 [表单与选择实践](source-verification.md#community-form-and-selection)；以下按 v0.9.4 公共 API 组织，不沿用项目自定义 Preference 名称。summary 和次级标签默认省略。

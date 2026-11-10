@@ -85,6 +85,8 @@ Check open/close, focused field, IME dismissal, freeform/caption bars and resize
 | `OverlayCascadingListPopup` | 页面内有真实父子层级的菜单 | 稳定项顺序和层级、叶项动作、逐层返回；若原生 cascading menu 已满足，不再自写 popup 栈 |
 | `WindowCascadingListPopup` | 独立窗口中的级联菜单 | 在上项基础上验证窗口边缘翻转/空间不足和子层焦点，不依赖内部 z-index 作为应用流程协议 |
 
+复杂编辑的基线/草稿/提交与多色集合见 [settings-and-editors](settings-and-editors.md)；后台任务、批量应用和日志见 [collections-and-workflows](collections-and-workflows.md)。
+
 ### Form, picker, and background-task lifetimes
 
 - 编辑弹窗：打开时创建当前对象的草稿，输入过程中只更新草稿；确认校验通过才提交。取消/返回不写回。复用同一 show 状态编辑不同对象时，初始化键包含对象身份，不能沿用上一份草稿。

@@ -7,7 +7,8 @@
 ## 能力范围
 
 - 精简入口与触发描述，按任务加载组件、布局、状态和性能参考。
-- 提供逐组件用法与回调/状态契约，结合 awesome-miuix 项目核验组合思路，并标明旧版、快照和本地分支边界。
+- 全量参考 awesome-miuix 固定清单中的 **15 个应用项目**，记录依赖、固定提交、代表性界面和可迁移边界。
+- 提供逐组件用法与回调/状态契约，以及设置编辑器、搜索多选、树形选择、拖拽排序、多色预览和任务流程。
 - 明确 Scaffold、底栏、IME、横屏缺口和 BottomSheet 的安全区归属。
 - 补充分段卡片、lazy key、展开/收起、布局 morph、帧级状态读取与不可见动画暂停。
 - 补全长对话框、原生单选弹窗、squircle 渲染选择与 blur 降级。
@@ -56,6 +57,9 @@ Claude Code 可安装到 `~/.claude/skills/miuix`。其他支持该格式的工�
 | 页面组合 / 现有 UI 审查 | [usage-patterns](references/usage-patterns.md) / [ui-review-workflow](references/ui-review-workflow.md) |
 | 设计语言 / 颜色角色 | [design-language](references/design-language.md) / [color-lookup](references/color-lookup.md) |
 | 逐组件使用说明 | [component-usage](references/component-usage.md) |
+| 全部 15 项目与兼容边界 | [community-projects](references/community-projects.md) |
+| 设置、输入、草稿、精确编辑与预览 | [settings-and-editors](references/settings-and-editors.md) |
+| 多选、排序、树、批量任务与事件 | [collections-and-workflows](references/collections-and-workflows.md) |
 | 基础组件 / 设置与菜单 | [component-selection](references/component-selection.md) / [preferences-and-menus](references/preferences-and-menus.md) |
 | 弹窗 / 图标与效果 | [overlays-and-windows](references/overlays-and-windows.md) / [styling-icons-and-effects](references/styling-icons-and-effects.md) |
 | 主题依赖 / 导航 | [setup-and-theme](references/setup-and-theme.md) / [miuix-nav](references/miuix-nav.md) |

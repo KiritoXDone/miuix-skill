@@ -152,6 +152,8 @@ fun SettingsScreen(
 
 Use this as a structural pattern. Confirm imports and exact component APIs against the target project and pinned source.
 
+需要超出单控件的流程时，按 [设置与编辑器](settings-and-editors.md)或 [集合与任务](collections-and-workflows.md) 组织。完整社区来源见 [15 项目索引](community-projects.md)，不要求日常实现把所有项目都读一遍。
+
 ## State and Component Variants
 
 Evidence: `docs/demo/` and the Example component sections.

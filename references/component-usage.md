@@ -51,7 +51,7 @@
 | `TextField` | value + onValueChange（String/TextFieldValue），或 state（TextFieldState） | 选择一种状态模型。value 重载用 singleLine/keyboardActions/visualTransformation；state 重载用 lineLimits/onKeyboardAction/inputTransformation/outputTransformation，不跨重载混参数 |
 | `SearchBar` / `InputField` | 同一 query 和 expanded 所有者；InputField 的 onQueryChange/onSearch 与外层 onExpandedChange 一致 | 查询、建议、结果状态由应用派生；后台过滤/请求需要去重或取消旧结果。SearchBar 不等于已有自动完成数据源；胶囊颜色参数属于 InputField |
 | `Switch` | checked + onCheckedChange | 表示立即生效的开/关。数据保存失败时恢复已确认状态或展示必要错误；不要另用 pressed 表示开关值 |
-| `Checkbox` | checked + onCheckedChange | 独立选择或多选集合。筛选/离屏不应清除未显示项目；如果由整行接管同一动作，按目标 API 将子控件回调置空，保留状态语义 |
+| `Checkbox` | state: ToggleableState + onClick；On/Off/Indeterminate | 独立选择或多选集合。筛选/离屏不应清除未显示项目；如果由整行接管同一动作，将子控件 onClick 置空，保留行的选择语义；完整设置行则用 CheckboxPreference 的 checked/onCheckedChange |
 | `RadioButton` | selected + onClick | 互斥选择；单一选择键由父级保存，各项据此派生 selected。没有必要把点击已选项解释成取消选择 |
 | `Slider` | value + onValueChange，范围用 valueRange，提交时机可用 onValueChangeFinished | 拖动期间更新 UI 草稿，昂贵保存可在结束后提交。steps 是端点之间的离散点数，不是总选项数 |
 | `VerticalSlider` | 与 Slider 相同的连续/离散值契约 | 给出可用高度，验证方向和嵌套滚动，不用旋转整个横向布局模拟其语义 |
@@ -123,6 +123,12 @@ fun CountInput(value: Int, onValueChange: (Int) -> Unit) {
 | 图标、squircle 与 blur | 依赖/平台能力按 [styling-icons-and-effects](styling-icons-and-effects.md) 配置 | 首先使用组件自带边界；需要自定义捕获/裁剪时保证反馈与内容同一视觉表面 |
 
 调色弹窗用一份 Color 草稿与允许不完整的 HEX 文本草稿；仅在文本格式合法时更新 Color。确认提交，取消保留原值；打开新的编辑对象时重置草稿。仅 RGB 的产品在提交时显式处理 alpha；不要把暂时输入不完整的字符串变成黑色或直接保存。自定义解析器属于应用代码，不从示例项目的 Android 扩展推断跨平台 API。
+
+## Advanced composition
+
+- 数值输入、重置、依赖设置、草稿、多色和实时预览：[settings-and-editors](settings-and-editors.md)。
+- 列表刷新、筛选后多选、三态树、排序、批量任务和反馈：[collections-and-workflows](collections-and-workflows.md)。
+- 固定清单全部 15 个项目的依赖和代表源码：[community-projects](community-projects.md)。
 
 ## Menu and overlay continuation
 

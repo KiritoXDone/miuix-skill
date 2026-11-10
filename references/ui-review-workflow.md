@@ -54,6 +54,7 @@ Assign each observed problem to one or more categories before editing:
 | Cross-page scale | Home looks correct but detail screens are enlarged | [Density ownership](setup-and-theme.md#density-ownership-across-navigation); compare runtime density/fontScale, providers and matching component defaults |
 | Insets and adaptation | Content under bars, IME overlap, broken wide layout | Scaffold contract, page shell, target platform behavior |
 | Accessibility | Missing descriptions, tiny targets, unreadable scaled text | Component semantics, target accessibility requirements, rendered checks |
+| Composite workflow | Selection lost after filtering/reorder, draft overwritten, duplicate task events | [Settings/editors](settings-and-editors.md), [collections/workflows](collections-and-workflows.md), and the actual state owner |
 | Performance | Whole-group composition, animation/recomposition churn, invisible work | [Lists and animation](performance-and-animation.md), representative data and traces |
 
 Prioritize structural and behavioral problems before decorative polish; surface-level tuning cannot repair a wrong host, hierarchy, or state model.
